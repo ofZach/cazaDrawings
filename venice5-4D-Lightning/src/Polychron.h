@@ -25,15 +25,24 @@ public:
     // only 4D rotation
     void rotate4DOnly(float dwx, float dwy, float dwz);  // non cumulative
     
+    unsigned int getNumVertices();
+    unsigned int getNumEdges();
+//    unsigned int getNumFaces();
+    
+    // algorithm stuff
+    vector<unsigned int>allVerticesAdjacentTo(unsigned int vertexIndex);
+    void drawEdgesTouchingNode(int nodeIndex);
+    
     void log();  // printf vertices, edges, faces
     
-private:
+//private:
     float wx, wy, wz;  // RADIANS, angle of rotations (each through the 4th dimension)
     vector<Point4D> vertices;
     vector<unsigned int> edges; // indices in vertices array
     vector<unsigned int> faces;  // indices in vertices array
     unsigned int verticesPerFace; // TODO
     
+private:
     // definitely private
     vector<Point4D> _v;
     vector<unsigned int> _e;

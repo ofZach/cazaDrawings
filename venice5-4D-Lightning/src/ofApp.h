@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "Polychron.h"
 
-#define NUM_POLY 10
+#define NUM_POLY 2
 
 class ofApp : public ofBaseApp{
 
@@ -25,6 +25,10 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
     Polychron polychron[NUM_POLY];
+    
+    vector<unsigned int> highlightedNodes;
+    vector<unsigned int> adjacentNodes;
+    vector<unsigned int> visitedNodeCount;
     
     ofEasyCam cam;
 };

@@ -22,6 +22,7 @@ void Point4D::rotate(ofMatrix4x4 m){
     w = newPoint.w;
 }
 
+// to revisit later
 //void Point4D::rotate(float xRad, float yRad, float zRad, float wRad){
 //    float r = sqrt( powf(x,2) + powf(y,2) + powf(z,2) + powf(w,2) );
 //    float a1 = atan( 1/( (x)/(sqrt(powf(w,2)+powf(z,2)+powf(y,2))) ) );
@@ -117,6 +118,35 @@ void Polychron::rotate4DOnly(float dwx, float dwy, float dwz){
     rotation *= rotateA3;
     rotate(rotation);
 }
+
+vector<unsigned int>Polychron::allVerticesAdjacentTo(unsigned int vertexIndex){
+    vector<unsigned int> adjacent;
+    for(int i = 0; i < edges.size() * .5; i++){
+        // if vertex found, add the other end of the edge
+        if(edges[i*2+0] == vertexIndex)
+            adjacent.push_back(edges[i*2+1]);
+        if(edges[i*2+1] == vertexIndex)
+            adjacent.push_back(edges[i*2+0]);
+    }
+    return adjacent;
+}
+
+void Polychron::drawEdgesTouchingVertex(int vertexIndex){
+    for(int i = 0; i < edges.size() * .5; i++){
+        if(edges[i*2+0] == vertexIndex || edges[i*2+1] == vertexIndex)
+           ofDrawLine(vertices[ edges[i*2+0] ].x, vertices[ edges[i*2+0] ].y, vertices[ edges[i*2+0] ].z,
+                      vertices[ edges[i*2+1] ].x, vertices[ edges[i*2+1] ].y, vertices[ edges[i*2+1] ].z);
+    }
+}
+
+unsigned int Polychron::getNumVertices(){
+    return vertices.size();
+}
+
+unsigned int Polychron::getNumEdges(){
+    return edges.size()*.5;
+}
+
 
 void Polychron::drawWireframe(){
     float pct = 1.0;//0.5 + 0.5 * sin(ofGetElapsedTimef()); //ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 1, true);
