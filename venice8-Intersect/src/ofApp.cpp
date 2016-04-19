@@ -27,7 +27,7 @@ void ofApp::setup(){
     
     plane.setCenter(ofVec3f(0, 0, 0));
     plane.setNormal(ofVec3f(0, 1, 0));
-    plane.setInfinite(false);
+    plane.setInfinite(true);
     plane.setScale(ofVec2f(100, 100));
     plane.color = ofColor(128, 128, 128);
 
@@ -55,7 +55,7 @@ void ofApp::update(){
     intersectionLines.push_back(polyline);
     int whichIndex = 0;
     for(int i = 0; i < intersections.size(); i++){
-        if(intersections[i].y < CONE_HEIGHT && intersections[i].y > -CONE_HEIGHT){
+        if(intersections[i].y > -CONE_HEIGHT && intersections[i].y < 0){// -CONE_HEIGHT){
             intersectionLines[whichIndex].addVertex(intersections[i]);
         }
         else if (intersectionLines[whichIndex].getVertices().size() > 0){
@@ -100,10 +100,10 @@ void ofApp::draw(){
         topCone.draw();
     ofPopMatrix();
     
-    ofPushMatrix();
-        ofTranslate(0, bottomCone.getHeight() * .5);
-        bottomCone.draw();
-    ofPopMatrix();
+//    ofPushMatrix();
+//        ofTranslate(0, bottomCone.getHeight() * .5);
+//        bottomCone.draw();
+//    ofPopMatrix();
 
     
 //    ofSetColor(255, 0, 0);
@@ -172,7 +172,7 @@ void ofApp::draw(){
     intersectionLines.push_back(polyline);
     int whichIndex = 0;
     for(int i = 0; i < intersections.size(); i++){
-        if(intersections[i].y < CONE_HEIGHT && intersections[i].y > -CONE_HEIGHT){
+        if(intersections[i].y > -CONE_HEIGHT && intersections[i].y < 0){//-CONE_HEIGHT){
             intersectionLines[whichIndex].addVertex(intersections[i]);
         }
         else if (intersectionLines[whichIndex].getVertices().size() > 0){
