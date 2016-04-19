@@ -29,7 +29,10 @@ public:
     unsigned int getNumEdges();
 //    unsigned int getNumFaces();
     
+    vector<float> energy; // brightness of lines
+    
     // algorithm stuff
+    vector<unsigned int>allEdgesAdjacentTo(unsigned int vertexIndex);
     vector<unsigned int>allVerticesAdjacentTo(unsigned int vertexIndex);
     void drawEdgesTouchingVertex(int vertexIndex);
     

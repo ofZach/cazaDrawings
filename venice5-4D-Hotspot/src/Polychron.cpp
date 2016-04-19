@@ -131,6 +131,16 @@ vector<unsigned int>Polychron::allVerticesAdjacentTo(unsigned int vertexIndex){
     return adjacent;
 }
 
+vector<unsigned int>Polychron::allEdgesAdjacentTo(unsigned int vertexIndex){
+    vector<unsigned int> adjacent;
+    for(int i = 0; i < edges.size() * .5; i++){
+        // if vertex found, add the edge
+        if(edges[i*2+0] == vertexIndex || edges[i*2+1] == vertexIndex)
+            adjacent.push_back(i);
+    }
+    return adjacent;
+}
+
 void Polychron::drawEdgesTouchingVertex(int vertexIndex){
     for(int i = 0; i < edges.size() * .5; i++){
         if(edges[i*2+0] == vertexIndex || edges[i*2+1] == vertexIndex)
@@ -146,7 +156,6 @@ unsigned int Polychron::getNumVertices(){
 unsigned int Polychron::getNumEdges(){
     return edges.size()*.5;
 }
-
 
 void Polychron::drawWireframe(){
     float pct = 1.0;//0.5 + 0.5 * sin(ofGetElapsedTimef()); //ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 1, true);

@@ -25,6 +25,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
     Polychron polychron[NUM_POLY];
+    vector<float> energy[NUM_POLY];  // size of vertices
     vector<unsigned int> highlighted[NUM_POLY];
 
     ofEasyCam cam;
@@ -32,4 +33,7 @@ class ofApp : public ofBaseApp{
     ofVec3f worldToScreen(ofVec3f WorldXYZ, ofMatrix4x4 additionalTransform);
 
     ofPoint hotSpot;
+    float hotSpotRadius;
+    
+    bool pointInHotspot(ofPoint point);
 };
