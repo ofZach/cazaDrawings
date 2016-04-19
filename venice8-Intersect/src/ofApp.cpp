@@ -28,7 +28,7 @@ void ofApp::setup(){
     plane.setCenter(ofVec3f(0, 0, 0));
     plane.setNormal(ofVec3f(0, 1, 0));
     plane.setInfinite(false);
-    plane.setScale(ofVec2f(400, 400));
+    plane.setScale(ofVec2f(100, 100));
     plane.color = ofColor(128, 128, 128);
 
     planeMouseOffset = ofPoint(0, 0, 0);
@@ -67,14 +67,22 @@ void ofApp::update(){
     }
 }
 
+ofEasyCam cam;
+
 //--------------------------------------------------------------
 void ofApp::draw(){
     
+    
+    cam.lookAt(ofPoint(0,0,0));
+    cam.setPosition(200 + 200 * sin(ofGetElapsedTimef()), 0, 400);
+    
     ofClear(255);
     
+    cam.begin();
     ofPushMatrix();
+    ofRotateX(ofGetElapsedTimef()*3);
     // move camera matrix
-    ofTranslate(ofGetWidth()*.5, ofGetHeight()*.5);
+    //ofTranslate(ofGetWidth()*.5, ofGetHeight()*.5);
     //    ofRotateX(180*ofNoise(ofGetElapsedTimef()*.1));
     //    ofRotateZ(180*ofNoise(ofGetElapsedTimef()*.1 + 10));
     ofScale(2.5, 2.5, 2.5);
@@ -103,7 +111,26 @@ void ofApp::draw(){
 //        rays[i].draw();
 //    }
     
-    plane.draw();
+    
+    //plane.draw();
+    
+//    
+//    ofPushMatrix();
+//    
+//    ofTranslate(plane.getCenter());
+//    ofQuaternion q, r;
+//    q.makeRotate(ofVec3f(0,0,1), plane.getNormal());
+//    r.makeRotate(ofVec3f(0,1,0) * q, plane.getUp());
+//    float angle, x, y, z;
+//    (q * r).getRotate(angle, x, y, z);
+//    ofRotate(angle, x, y, z);
+//    ofScale(plane.getScale().x, plane.getScale().y, 1.0);
+//    
+//    ofSetColor(255,0,0);ofRectangle(0,0,400,400);
+//    ofPopMatrix();
+    
+    
+    
     
     ofDisableDepthTest();
     
@@ -119,9 +146,60 @@ void ofApp::draw(){
     }
 
     
+    float normalAmount = sin(ofGetElapsedTimef() * 0.8) * 0.5 + 0.5;
+    
+    
+    for (int z = 0; z < 20; z ++){
+        
+        intersectionLines.clear();
+        
+    // update position and orientation of the plane
+    plane.setCenter(planeMouseOffset + ofVec3f(0, 100*ofNoise(ofGetElapsedTimef()*.4)-50 + z*1, 0));
+    plane.setNormal(planeMouseOffset + ofVec3f(200 * ofNoise(ofGetElapsedTimef() * .4 + 10)-100,  normalAmount*cos(z+ofGetElapsedTimef()) * 100, normalAmount*sin(z) * 100 + 200 * ofNoise(ofGetElapsedTimef()*.4 + 20)-100 ));
+    
+    intersections.clear();
+    // find all the intersections between the plane and the cones
+    for(int i = 0; i < rays.size(); i++){
+        ofVec3f intersect;
+        if(plane.intersect(rays[i], intersect)){
+            intersections.push_back(intersect);
+        }
+    }
+    
+    //now take these interesctions and clip them against the top and bottom of the cones
+    intersectionLines.clear();
+    ofPolyline polyline;
+    intersectionLines.push_back(polyline);
+    int whichIndex = 0;
+    for(int i = 0; i < intersections.size(); i++){
+        if(intersections[i].y < CONE_HEIGHT && intersections[i].y > -CONE_HEIGHT){
+            intersectionLines[whichIndex].addVertex(intersections[i]);
+        }
+        else if (intersectionLines[whichIndex].getVertices().size() > 0){
+            ofPolyline polyline;
+            intersectionLines.push_back(polyline);
+            whichIndex++;
+        }
+        //        cur.setClosed(true);
+    }
+        
+        for(int i = 0; i < intersectionLines.size(); i++){
+            intersectionLines[i].draw();
+        }
+        
+    
+    }
+    
+    
     ofPopMatrix();
     
     ofPopMatrix();
+    
+    
+    
+    cam.end();
+    
+    
 
 }
 

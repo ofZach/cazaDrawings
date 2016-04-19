@@ -40,4 +40,8 @@ class ofApp : public ofBaseApp{
     // intersections
     vector<ofPoint> intersections;
     vector<ofPolyline>intersectionLines;
+    
+    
+    
+    
 };
