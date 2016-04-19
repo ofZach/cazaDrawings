@@ -79,6 +79,8 @@ void ofApp::draw(){
     //    ofRotateZ(180*ofNoise(ofGetElapsedTimef()*.1 + 10));
     ofScale(2.5, 2.5, 2.5);
     
+    ofEnableDepthTest();
+    
     ofPushMatrix();
     // shapes and stuff matrix
     
@@ -102,6 +104,8 @@ void ofApp::draw(){
 //    }
     
     plane.draw();
+    
+    ofDisableDepthTest();
     
     ofSetColor(0);
     ofSetLineWidth(2);

@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-               BuildableName = "venice8-Intersect.app"
-               BlueprintName = "venice8-Intersect"
-               ReferencedContainer = "container:venice8-Intersect.xcodeproj">
+               BuildableName = "venice4-SVGMesh.app"
+               BlueprintName = "venice4-SVGMesh"
+               ReferencedContainer = "container:venice4-SVGMesh.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "venice8-Intersect.app"
-            BlueprintName = "venice8-Intersect"
-            ReferencedContainer = "container:venice8-Intersect.xcodeproj">
+            BuildableName = "venice4-SVGMesh.app"
+            BlueprintName = "venice4-SVGMesh"
+            ReferencedContainer = "container:venice4-SVGMesh.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "venice8-Intersect.app"
-            BlueprintName = "venice8-Intersect"
-            ReferencedContainer = "container:venice8-Intersect.xcodeproj">
+            BuildableName = "venice4-SVGMesh.app"
+            BlueprintName = "venice4-SVGMesh"
+            ReferencedContainer = "container:venice4-SVGMesh.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "venice8-Intersect.app"
-            BlueprintName = "venice8-Intersect"
-            ReferencedContainer = "container:venice8-Intersect.xcodeproj">
+            BuildableName = "venice4-SVGMesh.app"
+            BlueprintName = "venice4-SVGMesh"
+            ReferencedContainer = "container:venice4-SVGMesh.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

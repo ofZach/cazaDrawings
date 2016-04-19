@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-               BuildableName = "venice8-Intersect.app"
-               BlueprintName = "venice8-Intersect"
-               ReferencedContainer = "container:venice8-Intersect.xcodeproj">
+               BuildableName = "venice3-Breakoff.app"
+               BlueprintName = "venice3-Breakoff"
+               ReferencedContainer = "container:venice3-Breakoff.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "venice8-Intersect.app"
-            BlueprintName = "venice8-Intersect"
-            ReferencedContainer = "container:venice8-Intersect.xcodeproj">
+            BuildableName = "venice3-Breakoff.app"
+            BlueprintName = "venice3-Breakoff"
+            ReferencedContainer = "container:venice3-Breakoff.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "venice8-Intersect.app"
-            BlueprintName = "venice8-Intersect"
-            ReferencedContainer = "container:venice8-Intersect.xcodeproj">
+            BuildableName = "venice3-Breakoff.app"
+            BlueprintName = "venice3-Breakoff"
+            ReferencedContainer = "container:venice3-Breakoff.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E4B69B5A0A3A1756003C02F2"
-            BuildableName = "venice8-Intersect.app"
-            BlueprintName = "venice8-Intersect"
-            ReferencedContainer = "container:venice8-Intersect.xcodeproj">
+            BuildableName = "venice3-Breakoff.app"
+            BlueprintName = "venice3-Breakoff"
+            ReferencedContainer = "container:venice3-Breakoff.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
