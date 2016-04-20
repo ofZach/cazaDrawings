@@ -9,6 +9,8 @@ public:
     Point4D();
     Point4D(float x, float y, float z, float w);
     
+    ofVec3f threeD(); // converts 4D to 3D by flattening the 4th (orthographic)
+    
     void rotate(ofMatrix4x4 m);
 };
 

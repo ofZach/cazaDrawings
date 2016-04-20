@@ -22,6 +22,10 @@ void Point4D::rotate(ofMatrix4x4 m){
     w = newPoint.w;
 }
 
+ofVec3f Point4D::threeD(){
+    return ofVec3f(x, y, z);
+}
+
 // to revisit later
 //void Point4D::rotate(float xRad, float yRad, float zRad, float wRad){
 //    float r = sqrt( powf(x,2) + powf(y,2) + powf(z,2) + powf(w,2) );

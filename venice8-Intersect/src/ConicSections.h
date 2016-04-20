@@ -2,14 +2,11 @@
 
 #include "ofxRay.h"
 
-#define CONE_RESOLUTION 1000
-#define CONE_RADIUS 50
-#define CONE_HEIGHT 100
-
 class ConicSections : public ofBaseApp{
     
 public:
     ConicSections();
+    ConicSections(float aConeHeight, float aConeRadius);
     
     void drawCones();
     void drawIntersectionLines(vector<ofxRay::Plane> planes);
@@ -28,8 +25,9 @@ private:
     ofConePrimitive bottomCone;
     vector<ofxRay::Ray> topConeRays;
     vector<ofxRay::Ray> bottomConeRays;
-    ofxRay::Plane topConePlane;
-    ofxRay::Plane bottomConePlane;
+    
+    float coneHeight;
+    float coneRadius;
     
 private:
     // intersections

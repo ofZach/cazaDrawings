@@ -52,6 +52,10 @@ bool ofApp::pointInHotspot(ofPoint point){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+
+    
+    
+    
     ofClear(0);
 
     ofSetColor(255);
@@ -100,6 +104,11 @@ void ofApp::draw(){
             if(pointInHotspot(screenLocation)){
                 //                if(screenLocation.x < ofGetWidth()*.5){
                 highlighted[i].push_back(v);
+                // vertex energy
+                polychron[i].vertexEnergy[v] += 0.05;
+                if(polychron[i].vertexEnergy[ v ] > 1)
+                    polychron[i].vertexEnergy[ v ] = 1;
+                // edge energy
                 vector<unsigned int> adjEdg = polychron[i].allEdgesAdjacentTo(v);
                 for(int q = 0; q < adjEdg.size(); q++){
                     polychron[i].edgeEnergy[ adjEdg[q] ] += .05;
@@ -111,9 +120,23 @@ void ofApp::draw(){
   
         
         for(int e = 0; e < polychron[i].edges.size() * .5; e++){
-            ofSetColor(255, 255* polychron[i].edgeEnergy[e]);
-            ofDrawLine(polychron[i].vertices[ polychron[i].edges[e*2+0] ].x, polychron[i].vertices[ polychron[i].edges[e*2+0] ].y, polychron[i].vertices[ polychron[i].edges[e*2+0] ].z,
-                       polychron[i].vertices[ polychron[i].edges[e*2+1] ].x, polychron[i].vertices[ polychron[i].edges[e*2+1] ].y, polychron[i].vertices[ polychron[i].edges[e*2+1] ].z);
+//            ofSetColor(255, 255* polychron[i].edgeEnergy[e]);
+//            ofDrawLine(polychron[i].vertices[ polychron[i].edges[e*2+0] ].x,
+//                       polychron[i].vertices[ polychron[i].edges[e*2+0] ].y,
+//                       polychron[i].vertices[ polychron[i].edges[e*2+0] ].z,
+//                       polychron[i].vertices[ polychron[i].edges[e*2+1] ].x,
+//                       polychron[i].vertices[ polychron[i].edges[e*2+1] ].y,
+//                       polychron[i].vertices[ polychron[i].edges[e*2+1] ].z);
+
+            ofMesh myMesh;
+            myMesh.setMode(OF_PRIMITIVE_LINES);
+            myMesh.addVertex( polychron[i].vertices[ polychron[i].edges[e*2+0] ].threeD() );
+            myMesh.addColor(ofColor( 255* polychron[i].vertexEnergy[ polychron[i].edges[e*2+0] ] ));
+            myMesh.addVertex( polychron[i].vertices[ polychron[i].edges[e*2+1] ].threeD() );
+            myMesh.addColor(ofColor( 255* polychron[i].vertexEnergy[ polychron[i].edges[e*2+1] ] ));
+            ofEnableBlendMode(OF_BLENDMODE_ADD);
+            myMesh.draw();
+
         }
         // DRAW the highlighted vertices
 //        ofSetColor(255, 50);

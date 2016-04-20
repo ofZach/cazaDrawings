@@ -12,8 +12,6 @@ void ofApp::setup(){
 void ofApp::update(){
 }
 
-
-static int MAX = 1;
 //--------------------------------------------------------------
 void ofApp::draw(){
     
@@ -31,41 +29,41 @@ void ofApp::draw(){
 
     
     // move camera matrix
-    //ofTranslate(ofGetWidth()*.5, ofGetHeight()*.5);
-    //    ofRotateX(180*ofNoise(ofGetElapsedTimef()*.1));
-    //    ofRotateZ(180*ofNoise(ofGetElapsedTimef()*.1 + 10));
+//    ofTranslate(ofGetWidth()*.5, ofGetHeight()*.5);
+//        ofRotateX(180*ofNoise(ofGetElapsedTimef()*.1));
+//        ofRotateZ(180*ofNoise(ofGetElapsedTimef()*.1 + 10));
     
-    
-    // shapes and stuff matrix
-    
-    ofSetColor(240);
+        
+    // draw the cones
+    ofSetColor(245);
     conics.drawCones();
 
-    ofEnableDepthTest();
+//    ofEnableDepthTest();
 
     vector <ofxRay::Plane> planes;
     
+    // generate intersecting planes
     float normalAmount = sin(ofGetElapsedTimef() * 0.8) * 0.5 + 0.5;
-    for(int z = 0; z < MAX; z++){
+    for(int z = 0; z < 20; z++){
         
         ofxRay::Plane plane;
         plane.setInfinite(true);
         plane.setScale(ofVec2f(100, 100));
-//        plane.color = ofColor(128, 128, 128);        
         plane.setCenter(planeMouseOffset + ofVec3f(0, 100*ofNoise(ofGetElapsedTimef()*.4)-50 + z*1, 0));
         plane.setNormal(planeMouseOffset + ofVec3f(200 * ofNoise(ofGetElapsedTimef() * .4 + 10)-100,  normalAmount*cos(z+ofGetElapsedTimef()) * 100, normalAmount*sin(z) * 100 + 200 * ofNoise(ofGetElapsedTimef()*.4 + 20)-100 ));
 
         planes.push_back(plane);
     }
     
-    ofSetColor(0, 50);
-    ofSetLineWidth(2);
-    conics.drawIntersectionFills(planes);
+    // pass planes into the conics object to draw
+    ofSetLineWidth(1);
+    ofSetColor(128);
+    conics.drawIntersectionLines(planes);
  
     
     ofPopMatrix();
 
-    ofDisableDepthTest();
+//    ofDisableDepthTest();
     cam.end();
 }
 
@@ -75,12 +73,6 @@ void ofApp::keyPressed(int key){
         conics.topConeHidden = !conics.topConeHidden;
     if(key == 'b')
         conics.bottomConeHidden = !conics.bottomConeHidden;
-    if(key == 'm'){
-        if(MAX == 1)
-            MAX = 3;
-        else
-            MAX = 1;
-    }
 }
 
 //--------------------------------------------------------------
