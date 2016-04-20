@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     for(int i = 0; i < NUM_POLY; i++){
-        polychron[i].loadVefFile("120cell.ascii.txt");
+        polychron[i].loadVefFile("8cell.ascii.txt");
         highlighted[i].clear();
     }
     hotSpot = ofPoint(ofGetWidth()*.5, ofGetHeight()*.5);
@@ -16,6 +16,12 @@ float da3 = 0;
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    
+    float SCALE = .002;
+    
+    da1 = SCALE * sinf(ofGetElapsedTimef()*.022);
+    da2 = SCALE * cosf(ofGetElapsedTimef()*.036);
+    da3 = SCALE * (-sinf(ofGetElapsedTimef()*.0777));
     
     // KEYBOARD ROTATIONS
     float less = 0.7;
@@ -34,6 +40,8 @@ void ofApp::update(){
         for(int e = 0 ; e < polychron[i].vertexEnergy.size(); e++)
             polychron[i].vertexEnergy[e] *= 0.98;
     }
+    
+    
 }
 
 ofVec3f ofApp::worldToScreen(ofVec3f WorldXYZ, ofMatrix4x4 additionalTransform) {
@@ -61,8 +69,9 @@ void ofApp::draw(){
     ofSetColor(255);
     ofDrawBitmapString(ofToString(ofGetFrameRate()),20,20);
     
+    float camRadius = 400;
     cam.lookAt(ofPoint(0,0,0));
-    cam.setPosition(25 * sin(ofGetElapsedTimef()*.2), 25 * cosf(ofGetElapsedTimef()*.2), 20);
+    cam.setPosition(camRadius * sin(ofGetElapsedTimef()*.2), camRadius * cosf(ofGetElapsedTimef()*.2), 100);
     
 //    ofTranslate(ofGetWidth()*.5, ofGetHeight()*.5);
     
@@ -85,11 +94,11 @@ void ofApp::draw(){
         
         polyMatrix = ofMatrix4x4(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1);
         polyMatrix.scale(100, 100, 100);
-        if(i == 1){
-            polyMatrix.translate(i*0.1, i*0, 0);
-            polyMatrix.rotate(45, 1, 0, 0);
-            polyMatrix.scale(1.5, 1.5, 1.5);
-        }
+        polyMatrix.translate(i*0.1, i*0, 0);
+        polyMatrix.rotate(i*45, 1, 0, 0);
+        polyMatrix.rotate((i%2)*90, 0, 1, 0);
+        polyMatrix.rotate( (floor(i/2)*45), 0, 0, 1);
+        polyMatrix.scale(1+i*0.5, 1+i*0.5, 1+i*0.5);
 
         ofSetColor(255, 50);
         ofMultMatrix(polyMatrix);
@@ -172,12 +181,12 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-    if(key == '[' || key == ']')
-        da1 = 0;
-    if(key == OF_KEY_UP || key == OF_KEY_DOWN)
-        da2 = 0;
-    if(key == OF_KEY_RIGHT || key == OF_KEY_LEFT)
-        da3 = 0;
+//    if(key == '[' || key == ']')
+//        da1 = 0;
+//    if(key == OF_KEY_UP || key == OF_KEY_DOWN)
+//        da2 = 0;
+//    if(key == OF_KEY_RIGHT || key == OF_KEY_LEFT)
+//        da3 = 0;
 }
 
 //--------------------------------------------------------------

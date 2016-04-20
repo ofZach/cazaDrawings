@@ -1,9 +1,8 @@
 #pragma once
 
 #include "ofMain.h"
-#include "Polychron.h"
-
-#define NUM_POLY 3
+#include "ofxRay.h"
+#include "ConicSections.h"
 
 class ofApp : public ofBaseApp{
 
@@ -23,16 +22,11 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-
-    Polychron polychron[NUM_POLY];
-    vector<unsigned int> highlighted[NUM_POLY];
-
+    
+    vector<ConicSections> conics;
     ofEasyCam cam;
-    
-    ofVec3f worldToScreen(ofVec3f WorldXYZ, ofMatrix4x4 additionalTransform);
 
-    ofPoint hotSpot;
-    float hotSpotRadius;
-    
-    bool pointInHotspot(ofPoint point);
+    // the intersecting plane
+    ofPoint planeMouseOffset;
+
 };
