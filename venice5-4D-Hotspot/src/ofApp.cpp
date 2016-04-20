@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     for(int i = 0; i < NUM_POLY; i++){
-        polychron[i].loadVefFile("8cell.ascii.txt");
+        polychron[i].loadVefFile("120cell.ascii.txt");
         highlighted[i].clear();
     }
     hotSpot = ofPoint(ofGetWidth()*.5, ofGetHeight()*.5);
@@ -58,7 +58,7 @@ void ofApp::draw(){
     ofDrawBitmapString(ofToString(ofGetFrameRate()),20,20);
     
     cam.lookAt(ofPoint(0,0,0));
-    cam.setPosition(80 * sin(ofGetElapsedTimef()*.2), 80 * cosf(ofGetElapsedTimef()*.2), 20);
+    cam.setPosition(25 * sin(ofGetElapsedTimef()*.2), 25 * cosf(ofGetElapsedTimef()*.2), 20);
     
 //    ofTranslate(ofGetWidth()*.5, ofGetHeight()*.5);
     
@@ -87,7 +87,7 @@ void ofApp::draw(){
             polyMatrix.scale(1.5, 1.5, 1.5);
         }
 
-        ofSetColor(255, 30);
+        ofSetColor(255, 50);
         ofMultMatrix(polyMatrix);
         polychron[i].drawWireframe();
         

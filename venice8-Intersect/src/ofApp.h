@@ -2,10 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxRay.h"
-
-#define CONE_RESOLUTION 1000
-#define CONE_RADIUS 50
-#define CONE_HEIGHT 100
+#include "ConicSections.h"
 
 class ofApp : public ofBaseApp{
 
@@ -26,22 +23,10 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
+    ConicSections conics;
+    ofEasyCam cam;
+
     // the intersecting plane
     ofPoint planeMouseOffset;
-    ofxRay::Plane plane;
 
-    // cones
-    ofConePrimitive topCone;
-    ofConePrimitive bottomCone;
-    vector<ofxRay::Ray> rays;
-    ofxRay::Plane topPlane;
-    ofxRay::Plane bottomPlane;
-    
-    // intersections
-    vector<ofPoint> intersections;
-    vector<ofPolyline>intersectionLines;
-    
-    
-    
-    
 };
