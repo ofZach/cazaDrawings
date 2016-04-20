@@ -3,15 +3,17 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 
-//    conics.topConeHidden = true;
+    conics.topConeHidden = true;
     
-    planeMouseOffset = ofPoint(0, 0, 0);
+    planeMouseOffset = ofPoint(0, -50, 0);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 }
 
+
+static int MAX = 1;
 //--------------------------------------------------------------
 void ofApp::draw(){
     
@@ -23,7 +25,6 @@ void ofApp::draw(){
  
 
     cam.begin();
-//    ofEnableDepthTest();
     ofPushMatrix();
 //    ofRotateX(ofGetElapsedTimef()*3);
     ofScale(2.5, 2.5, 2.5);
@@ -40,13 +41,12 @@ void ofApp::draw(){
     ofSetColor(240);
     conics.drawCones();
 
-    
-    ofSetColor(0);
-    ofSetLineWidth(2);
+    ofEnableDepthTest();
+
     vector <ofxRay::Plane> planes;
     
     float normalAmount = sin(ofGetElapsedTimef() * 0.8) * 0.5 + 0.5;
-    for(int z = 0; z < 20; z++){
+    for(int z = 0; z < MAX; z++){
         
         ofxRay::Plane plane;
         plane.setInfinite(true);
@@ -58,12 +58,14 @@ void ofApp::draw(){
         planes.push_back(plane);
     }
     
-    conics.drawIntersectionLines(planes);
+    ofSetColor(0, 50);
+    ofSetLineWidth(2);
+    conics.drawIntersectionFills(planes);
  
     
     ofPopMatrix();
 
-//    ofDisableDepthTest();
+    ofDisableDepthTest();
     cam.end();
 }
 
@@ -73,6 +75,12 @@ void ofApp::keyPressed(int key){
         conics.topConeHidden = !conics.topConeHidden;
     if(key == 'b')
         conics.bottomConeHidden = !conics.bottomConeHidden;
+    if(key == 'm'){
+        if(MAX == 1)
+            MAX = 3;
+        else
+            MAX = 1;
+    }
 }
 
 //--------------------------------------------------------------

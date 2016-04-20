@@ -66,7 +66,8 @@ void ConicSections::drawIntersectionLines(vector<ofxRay::Plane> planes){
         topIntersectionLines.push_back( empty3 );
         topLineIndex++; // if the line jumps cones or passes clipping planes- needs to start a new polyline
         for(int i = 0; i < topIntersections.size(); i++){
-            if( !(topIntersections[i].x == -1 && topIntersections[i].y == -1 && topIntersections[i].z == -1) )                topIntersectionLines[ topLineIndex ].addVertex(topIntersections[i]);
+            if( !(topIntersections[i].x == -1 && topIntersections[i].y == -1 && topIntersections[i].z == -1) )
+                topIntersectionLines[ topLineIndex ].addVertex(topIntersections[i]);
             else if (topIntersectionLines[ topLineIndex ].getVertices().size() > 0){
                 ofPolyline polyline;
                 topIntersectionLines.push_back(polyline);
@@ -79,7 +80,8 @@ void ConicSections::drawIntersectionLines(vector<ofxRay::Plane> planes){
         bottomIntersectionLines.push_back( empty4 );
         bottomLineIndex++; // if the line jumps cones or passes clipping planes- needs to start a new polyline
         for(int i = 0; i < bottomIntersections.size(); i++){
-            if( !(bottomIntersections[i].x == -1 && bottomIntersections[i].y == -1 && bottomIntersections[i].z == -1) )                bottomIntersectionLines[ bottomLineIndex ].addVertex(bottomIntersections[i]);
+            if( !(bottomIntersections[i].x == -1 && bottomIntersections[i].y == -1 && bottomIntersections[i].z == -1) )
+                bottomIntersectionLines[ bottomLineIndex ].addVertex(bottomIntersections[i]);
             else if (bottomIntersectionLines[ bottomLineIndex ].getVertices().size() > 0){
                 ofPolyline polyline;
                 bottomIntersectionLines.push_back(polyline);
@@ -97,6 +99,69 @@ void ConicSections::drawIntersectionLines(vector<ofxRay::Plane> planes){
 
 void ConicSections::drawIntersectionFills(vector<ofxRay::Plane> planes){
     
+//    topIntersectionLines.clear();
+//    bottomIntersectionLines.clear();
+    ofPolyline topPolyline, bottomPolyline;
+//    topIntersectionLines.push_back( empty1 );
+//    bottomIntersectionLines.push_back( empty2 );
+    
+    // gather all intersections with every plane
+    for(int p = 0; p < planes.size();p++){
+        // gather all intersections with this one plane
+        vector<ofPoint> topIntersections;
+        vector<ofPoint> bottomIntersections;
+        // find all the intersections between the plane and the cones
+        for(int r = 0; r < topConeRays.size(); r++){
+            ofVec3f topIntersect, bottomIntersect;
+            
+            if(!topConeHidden){
+                if(planes[p].intersect(topConeRays[r], topIntersect))
+                    topIntersections.push_back(topIntersect);
+                else
+                    topIntersections.push_back(ofVec3f(-1, -1, -1)); // code for out of bounds
+            }
+            if(!bottomConeHidden){
+                if(planes[p].intersect(bottomConeRays[r], bottomIntersect))
+                    bottomIntersections.push_back(bottomIntersect);
+                else
+                    bottomIntersections.push_back(ofVec3f(-1, -1, -1)); // code for out of bounds
+            }
+        }
+        
+        // convert intersections into polyline path (or multiple ones)
+        // at the same time clip them against the top and bottom of the cones
+        
+        for(int i = 0; i < topIntersections.size(); i++){
+            if( !(topIntersections[i].x == -1 && topIntersections[i].y == -1 && topIntersections[i].z == -1) )
+                topPolyline.addVertex(topIntersections[i]);
+        }
+        topPolyline.close();
+        
+        for(int i = 0; i < bottomIntersections.size(); i++){
+            if( !(bottomIntersections[i].x == -1 && bottomIntersections[i].y == -1 && bottomIntersections[i].z == -1) )
+                bottomPolyline.addVertex(bottomIntersections[i]);
+        }
+        bottomPolyline.close();
+        
+        if(topPolyline.getVertices().size()){
+            ofBeginShape();
+            for( int i = 0; i < topPolyline.getVertices().size(); i++) {
+                ofVertex(topPolyline.getVertices().at(i).x,
+                         topPolyline.getVertices().at(i).y,
+                         topPolyline.getVertices().at(i).z);
+            }
+            ofEndShape(true);
+        }
+        if(bottomPolyline.getVertices().size()){
+            ofBeginShape();
+            for( int i = 0; i < bottomPolyline.getVertices().size(); i++) {
+                ofVertex(bottomPolyline.getVertices().at(i).x,
+                         bottomPolyline.getVertices().at(i).y,
+                         bottomPolyline.getVertices().at(i).z);
+            }
+            ofEndShape(true);
+        }
+    }
 }
 
 
