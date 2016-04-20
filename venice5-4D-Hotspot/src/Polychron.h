@@ -13,23 +13,25 @@ public:
 };
 
 class Polychron : public ofBaseApp {
-    
 public:
     Polychron();
     void loadVefFile(string file);
     void drawWireframe();
     
     // proper rotaiton (includes all 4D)
-    void rotate(ofMatrix4x4 m); // cumulative.  all 4 cols/rows are used for rotation, not 3 with 1 translation like traditional 3D graphics
-    
-    // only 4D rotation
+    void rotate(ofMatrix4x4 m); // cumulative.  all 4 cols/rows are rotation, not 3&1 translation like 3D opengl
     void rotate4DOnly(float dwx, float dwy, float dwz);  // non cumulative
     
     unsigned int getNumVertices();
     unsigned int getNumEdges();
 //    unsigned int getNumFaces();
     
-    vector<float> energy; // brightness of lines
+    
+    // BONUS THINGS:
+    
+    // some extra fun stuff
+    vector<float> edgeEnergy;  // size of edge / 2, due to span
+    vector<float> vertexEnergy;  // size of vertex
     
     // algorithm stuff
     vector<unsigned int>allEdgesAdjacentTo(unsigned int vertexIndex);
@@ -40,13 +42,13 @@ public:
     
 //private:
     float wx, wy, wz;  // RADIANS, angle of rotations (each through the 4th dimension)
-    vector<Point4D> vertices;
+    vector<Point4D> vertices;  // these will change when you apply the rotations
     vector<unsigned int> edges; // indices in vertices array
     vector<unsigned int> faces;  // indices in vertices array
     unsigned int verticesPerFace; // TODO
     
 private:
-    // definitely private
+    // the coordinates of the shape at 0 rotation
     vector<Point4D> _v;
     vector<unsigned int> _e;
     vector<unsigned int> _f;

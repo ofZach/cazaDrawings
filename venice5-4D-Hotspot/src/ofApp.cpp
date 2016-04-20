@@ -7,13 +7,7 @@ void ofApp::setup(){
         highlighted[i].clear();
     }
     hotSpot = ofPoint(ofGetWidth()*.5, ofGetHeight()*.5);
-    hotSpotRadius = 100;
-    for(int i = 0; i < NUM_POLY; i++){
-        polychron[i].energy.clear();
-        for(int v = 0; v < polychron[i].getNumVertices(); v++){
-            polychron[i].energy.push_back(0);
-        }
-    }
+    hotSpotRadius = 80;
 }
 
 float da1 = 0;
@@ -33,20 +27,19 @@ void ofApp::update(){
         angle1 *= less;
         angle2 *= less;
         angle3 *= less;
-        for(int e = 0 ; e <  polychron[i].energy.size(); e++){
-            polychron[i].energy[e] -= .02;
-            if(polychron[i].energy[e] < 0)
-                polychron[i].energy[e] = 0;
-        }
+        
+        // decrement the edge energy
+        for(int e = 0 ; e < polychron[i].edgeEnergy.size(); e++)
+            polychron[i].edgeEnergy[e] *= 0.98;
+        for(int e = 0 ; e < polychron[i].vertexEnergy.size(); e++)
+            polychron[i].vertexEnergy[e] *= 0.98;
     }
 }
 
 ofVec3f ofApp::worldToScreen(ofVec3f WorldXYZ, ofMatrix4x4 additionalTransform) {
     ofRectangle viewport = ofGetCurrentRenderer()->getCurrentViewport();
-    
     ofVec3f CameraXYZ = WorldXYZ * additionalTransform * cam.getModelViewProjectionMatrix(viewport);
     ofVec3f ScreenXYZ;
-    
     ScreenXYZ.x = (CameraXYZ.x + 1.0f) / 2.0f * viewport.width + viewport.x;
     ScreenXYZ.y = (1.0f - CameraXYZ.y) / 2.0f * viewport.height + viewport.y;
     ScreenXYZ.z = CameraXYZ.z;
@@ -64,17 +57,18 @@ void ofApp::draw(){
     ofSetColor(255);
     ofDrawBitmapString(ofToString(ofGetFrameRate()),20,20);
     
-    //cam.lookAt(ofPoint(0,0,0));
-    //cam.setPosition(200 + 80 * sin(ofGetElapsedTimef()), 0, 200);
+    cam.lookAt(ofPoint(0,0,0));
+    cam.setPosition(80 * sin(ofGetElapsedTimef()*.2), 80 * cosf(ofGetElapsedTimef()*.2), 20);
     
 //    ofTranslate(ofGetWidth()*.5, ofGetHeight()*.5);
     
-    ofSetColor(255, 50);
-    ofNoFill();
-    ofDrawCircle(hotSpot.x, hotSpot.y, hotSpotRadius);
-    ofFill();
-    ofSetColor(255);
+    
+//    ofSetColor(255, 50);
+//    ofNoFill();
+//    ofDrawCircle(hotSpot.x, hotSpot.y, hotSpotRadius);
 //    ofDrawLine(ofGetWidth()*.5, 0, ofGetWidth()*.5, ofGetHeight());
+//    ofFill();
+//    ofSetColor(255);
     
     ofMatrix4x4 polyMatrix;
     
@@ -93,7 +87,7 @@ void ofApp::draw(){
             polyMatrix.scale(1.5, 1.5, 1.5);
         }
 
-        ofSetColor(255, 50);
+        ofSetColor(255, 30);
         ofMultMatrix(polyMatrix);
         polychron[i].drawWireframe();
         
@@ -108,21 +102,16 @@ void ofApp::draw(){
                 highlighted[i].push_back(v);
                 vector<unsigned int> adjEdg = polychron[i].allEdgesAdjacentTo(v);
                 for(int q = 0; q < adjEdg.size(); q++){
-                    polychron[i].energy[ adjEdg[q] ] += .05;
-                    if(polychron[i].energy[ adjEdg[q] ] > 1)
-                        polychron[i].energy[ adjEdg[q] ] = 1;
+                    polychron[i].edgeEnergy[ adjEdg[q] ] += .05;
+                    if(polychron[i].edgeEnergy[ adjEdg[q] ] > 1)
+                        polychron[i].edgeEnergy[ adjEdg[q] ] = 1;
                 }
             }
         }
   
-//        ofSetColor(255, 255);
-//        for(int h = 0; h < highlighted[i].size(); h++){
-//            polychron[i].drawEdgesTouchingVertex(highlighted[i][h]);
-//        }
-        
         
         for(int e = 0; e < polychron[i].edges.size() * .5; e++){
-            ofSetColor(255, 255* polychron[i].energy[e]);
+            ofSetColor(255, 255* polychron[i].edgeEnergy[e]);
             ofDrawLine(polychron[i].vertices[ polychron[i].edges[e*2+0] ].x, polychron[i].vertices[ polychron[i].edges[e*2+0] ].y, polychron[i].vertices[ polychron[i].edges[e*2+0] ].z,
                        polychron[i].vertices[ polychron[i].edges[e*2+1] ].x, polychron[i].vertices[ polychron[i].edges[e*2+1] ].y, polychron[i].vertices[ polychron[i].edges[e*2+1] ].z);
         }
@@ -141,18 +130,20 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    static float ROT_SPEED = 0.001;
+    
     if(key == OF_KEY_RIGHT)
-        da3 = 0.003;
+        da3 = ROT_SPEED;
     else if(key == OF_KEY_LEFT)
-        da3 = -0.003;
+        da3 = -ROT_SPEED;
     if(key == OF_KEY_UP)
-        da2 = 0.003;
+        da2 = ROT_SPEED;
     else if(key == OF_KEY_DOWN)
-        da2 = -0.003;
+        da2 = -ROT_SPEED;
     if(key == '[')
-        da1 = 0.003;
+        da1 = ROT_SPEED;
     else if(key == ']')
-        da1 = -0.003;
+        da1 = -ROT_SPEED;
     
 }
 
@@ -211,9 +202,5 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
     for(int i = 0; i < NUM_POLY; i++){
         polychron[i].loadVefFile(dragInfo.files[0]);
         highlighted[i].clear();
-        polychron[i].energy.clear();
-        for(int v = 0; v < polychron[i].getNumVertices(); v++){
-            polychron[i].energy.push_back(0);
-        }
     }
 }

@@ -45,6 +45,8 @@ void Polychron::loadVefFile(string file) {
     _v.clear();
     _e.clear();
     _f.clear();
+    edgeEnergy.clear();
+    vertexEnergy.clear();
 
     unsigned int numVertices, numEdges, numFaces;
     numVertices = numEdges =  numFaces = 0;
@@ -65,11 +67,8 @@ void Polychron::loadVefFile(string file) {
         edges.push_back(e1);
         edges.push_back(e2);
     }
-
-    
     // wait, faces is not always 4. sometimes it's 5 or 3.
     // need to change approach, need to fin and watch for line endings
-    
 //    fin >> numFaces;
 //    for(int i = 0; i < numFaces; i++){
 //        unsigned int f1, f2;
@@ -77,7 +76,10 @@ void Polychron::loadVefFile(string file) {
 //        faces.push_back(f1);
 //        faces.push_back(f2);
 //    }
-
+    fin.close();
+    
+    
+    // store data at orientation 0
     for(int i = 0; i < vertices.size(); i++)
         _v.push_back(vertices[i]);
     for(int i = 0; i < edges.size(); i++)
@@ -85,7 +87,12 @@ void Polychron::loadVefFile(string file) {
     for(int i = 0; i < faces.size(); i++)
         _f.push_back(faces[i]);
 
-    fin.close();
+    // build characteristics
+    for(int i = 0; i < vertices.size(); i++)
+        vertexEnergy.push_back(0.0);
+    for(int i = 0; i < edges.size()*.5; i++)
+        edgeEnergy.push_back(0.0);
+    
 }
 
 void Polychron::rotate(ofMatrix4x4 m){
