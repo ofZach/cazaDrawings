@@ -19,7 +19,7 @@ public:
     // add planes here for intersections
     vector <ofxRay::Plane> planes;
     
-private:
+//private:
     // cones
     ofConePrimitive topCone;
     ofConePrimitive bottomCone;

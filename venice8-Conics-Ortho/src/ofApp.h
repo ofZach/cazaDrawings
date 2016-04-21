@@ -28,5 +28,5 @@ class ofApp : public ofBaseApp{
 
     // the intersecting plane
     ofPoint planeMouseOffset;
-
+    ofQuaternion convert(ofMatrix4x4 m1);
 };

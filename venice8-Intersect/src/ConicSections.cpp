@@ -160,6 +160,10 @@ void ConicSections::drawIntersectionFills(vector<ofxRay::Plane> planes){
     
     // gather all intersections with every plane
     for(int p = 0; p < planes.size();p++){
+        
+        bottomPolyline.clear();
+        topPolyline.clear();
+        
         // gather all intersections with this one plane
         vector<ofPoint> topIntersections;
         vector<ofPoint> bottomIntersections;

@@ -14,6 +14,8 @@ float da1 = 0;
 float da2 = 0;
 float da3 = 0;
 
+float ax[NUM_POLY], ay[NUM_POLY], az[NUM_POLY];
+
 //--------------------------------------------------------------
 void ofApp::update(){
     
@@ -22,17 +24,73 @@ void ofApp::update(){
     da1 = SCALE * sinf(ofGetElapsedTimef()*.022);
     da2 = SCALE * cosf(ofGetElapsedTimef()*.036);
     da3 = SCALE * (-sinf(ofGetElapsedTimef()*.0777));
+
+    ax[0] = SCALE * sinf(ofGetElapsedTimef()*.022);
+    ax[1] = SCALE * cosf(ofGetElapsedTimef()*.032);
+    ax[2] = SCALE * -sinf(ofGetElapsedTimef()*.092);
+    ax[3] = SCALE * -cosf(ofGetElapsedTimef()*.046);
+    ax[4] = SCALE * sinf(ofGetElapsedTimef()*.027);
+    ax[5] = SCALE * cosf(ofGetElapsedTimef()*.032);
+    ax[6] = SCALE * -sinf(ofGetElapsedTimef()*.072);
+    ax[7] = SCALE * -cosf(ofGetElapsedTimef()*.092);
+    
+    ay[0] = SCALE * sinf(ofGetElapsedTimef()*.055);
+    ay[1] = SCALE * cosf(ofGetElapsedTimef()*.039);
+    ay[2] = SCALE * -sinf(ofGetElapsedTimef()*.033);
+    ay[3] = SCALE * -cosf(ofGetElapsedTimef()*.055);
+    ay[4] = SCALE * sinf(ofGetElapsedTimef()*.073);
+    ay[5] = SCALE * cosf(ofGetElapsedTimef()*.094);
+    ay[6] = SCALE * -sinf(ofGetElapsedTimef()*.017);
+    ay[7] = SCALE * -cosf(ofGetElapsedTimef()*.039);
+    
+    az[0] = SCALE * sinf(ofGetElapsedTimef()*.065);
+    az[1] = SCALE * cosf(ofGetElapsedTimef()*.035);
+    az[2] = SCALE * -sinf(ofGetElapsedTimef()*.0785);
+    az[3] = SCALE * -cosf(ofGetElapsedTimef()*.0872);
+    az[4] = SCALE * sinf(ofGetElapsedTimef()*.081);
+    az[5] = SCALE * cosf(ofGetElapsedTimef()*.093);
+    az[6] = SCALE * -sinf(ofGetElapsedTimef()*.028);
+    az[7] = SCALE * -cosf(ofGetElapsedTimef()*.058);
+
+//    ax[8] = SCALE * sinf(ofGetElapsedTimef()*.062);
+//    ax[9] = SCALE * cosf(ofGetElapsedTimef()*.042);
+//    ax[10] = SCALE * -sinf(ofGetElapsedTimef()*.072);
+//    ax[11] = SCALE * -cosf(ofGetElapsedTimef()*.066);
+//    ax[12] = SCALE * sinf(ofGetElapsedTimef()*.047);
+//    ax[13] = SCALE * cosf(ofGetElapsedTimef()*.082);
+//    ax[14] = SCALE * -sinf(ofGetElapsedTimef()*.022);
+//    ax[15] = SCALE * -cosf(ofGetElapsedTimef()*.062);
+//    
+//    ay[8] = SCALE * sinf(ofGetElapsedTimef()*.055);
+//    ay[9] = SCALE * cosf(ofGetElapsedTimef()*.089);
+//    ay[10] = SCALE * -sinf(ofGetElapsedTimef()*.023);
+//    ay[11] = SCALE * -cosf(ofGetElapsedTimef()*.045);
+//    ay[12] = SCALE * sinf(ofGetElapsedTimef()*.053);
+//    ay[13] = SCALE * cosf(ofGetElapsedTimef()*.074);
+//    ay[14] = SCALE * -sinf(ofGetElapsedTimef()*.027);
+//    ay[15] = SCALE * -cosf(ofGetElapsedTimef()*.069);
+//    
+//    az[8] = SCALE * sinf(ofGetElapsedTimef()*.045);
+//    az[9] = SCALE * cosf(ofGetElapsedTimef()*.065);
+//    az[10] = SCALE * -sinf(ofGetElapsedTimef()*.0385);
+//    az[11] = SCALE * -cosf(ofGetElapsedTimef()*.0272);
+//    az[12] = SCALE * sinf(ofGetElapsedTimef()*.071);
+//    az[13] = SCALE * cosf(ofGetElapsedTimef()*.063);
+//    az[14] = SCALE * -sinf(ofGetElapsedTimef()*.048);
+//    az[15] = SCALE * -cosf(ofGetElapsedTimef()*.038);
     
     // KEYBOARD ROTATIONS
-    float less = 0.7;
-    float angle1 = da1;
-    float angle2 = da2;
-    float angle3 = da3;
+//    float less = 0.7;
+//    float angle1 = da1;
+//    float angle2 = da2;
+//    float angle3 = da3;
     for(int i = 0; i < NUM_POLY; i++){
-        polychron[i].rotate4DOnly(angle1, angle2, angle3);
-        angle1 *= less;
-        angle2 *= less;
-        angle3 *= less;
+//        polychron[i].rotate4DOnly(angle1, angle2, angle3);
+//        angle1 *= less;
+//        angle2 *= less;
+//        angle3 *= less;
+
+        polychron[i].rotate4DOnly(ax[i], ay[i], az[i]);
         
         // decrement the edge energy
         for(int e = 0 ; e < polychron[i].edgeEnergy.size(); e++)
@@ -40,8 +98,6 @@ void ofApp::update(){
         for(int e = 0 ; e < polychron[i].vertexEnergy.size(); e++)
             polychron[i].vertexEnergy[e] *= 0.98;
     }
-    
-    
 }
 
 ofVec3f ofApp::worldToScreen(ofVec3f WorldXYZ, ofMatrix4x4 additionalTransform) {
@@ -60,18 +116,16 @@ bool ofApp::pointInHotspot(ofPoint point){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
-    
-    
-    
     ofClear(0);
 
     ofSetColor(255);
     ofDrawBitmapString(ofToString(ofGetFrameRate()),20,20);
     
     float camRadius = 400;
-    cam.lookAt(ofPoint(0,0,0));
-    cam.setPosition(camRadius * sin(ofGetElapsedTimef()*.2), camRadius * cosf(ofGetElapsedTimef()*.2), 100);
+//    cam.lookAt(ofPoint(0,0,0));
+//    cam.setPosition(camRadius * sin(ofGetElapsedTimef()*.2), camRadius * cosf(ofGetElapsedTimef()*.2), 100);
+    
+    
     
 //    ofTranslate(ofGetWidth()*.5, ofGetHeight()*.5);
     

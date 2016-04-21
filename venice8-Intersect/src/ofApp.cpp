@@ -15,7 +15,6 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-    
 //    cam.lookAt(ofPoint(0,0,0));
 //    cam.setPosition(200 + 200 * sin(ofGetElapsedTimef()), 0, 400);
     
@@ -38,13 +37,13 @@ void ofApp::draw(){
     ofSetColor(245);
     conics.drawCones();
 
-//    ofEnableDepthTest();
+    ofEnableDepthTest();
 
     vector <ofxRay::Plane> planes;
     
     // generate intersecting planes
     float normalAmount = sin(ofGetElapsedTimef() * 0.8) * 0.5 + 0.5;
-    for(int z = 0; z < 20; z++){
+    for(int z = 0; z < 1; z++){
         
         ofxRay::Plane plane;
         plane.setInfinite(true);
@@ -58,12 +57,11 @@ void ofApp::draw(){
     // pass planes into the conics object to draw
     ofSetLineWidth(1);
     ofSetColor(128);
-    conics.drawIntersectionLines(planes);
+    conics.drawIntersectionFills(planes);
  
-    
     ofPopMatrix();
 
-//    ofDisableDepthTest();
+    ofDisableDepthTest();
     cam.end();
 }
 

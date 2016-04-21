@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "Polychron.h"
 
-#define NUM_POLY 3
+#define NUM_POLY 8
 
 class ofApp : public ofBaseApp{
 

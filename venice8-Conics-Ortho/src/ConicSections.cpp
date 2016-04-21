@@ -14,7 +14,7 @@ ConicSections::ConicSections(){
     
     topCone = ofConePrimitive(coneRadius, coneHeight, DEFAULT_CONE_RESOLUTION, 1);
     bottomCone = ofConePrimitive(coneRadius, -coneHeight, DEFAULT_CONE_RESOLUTION, 1);
-
+    
     ofPoint origin = ofPoint(0, 0, 0);
     for(int i = 0;i < DEFAULT_CONE_RESOLUTION; i++){
         ofxRay::Ray topRay, bottomRay;
@@ -24,8 +24,8 @@ ConicSections::ConicSections(){
                               coneHeight,
                               coneRadius*sinf(2*M_PI*i/DEFAULT_CONE_RESOLUTION)));
         bottomRay.setEnd(ofPoint(coneRadius*cosf(2*M_PI*i/DEFAULT_CONE_RESOLUTION),
-                              -coneHeight,
-                              coneRadius*sinf(2*M_PI*i/DEFAULT_CONE_RESOLUTION)));
+                                 -coneHeight,
+                                 coneRadius*sinf(2*M_PI*i/DEFAULT_CONE_RESOLUTION)));
         topConeRays.push_back(topRay);
         bottomConeRays.push_back(bottomRay);
     }
@@ -61,7 +61,7 @@ ConicSections::ConicSections(float aConeHeight, float aConeRadius){
 
 
 void ConicSections::drawIntersectionLines(vector<ofxRay::Plane> planes){
- 
+    
     topIntersectionLines.clear();
     bottomIntersectionLines.clear();
     ofPolyline empty1, empty2;;
@@ -69,7 +69,7 @@ void ConicSections::drawIntersectionLines(vector<ofxRay::Plane> planes){
     bottomIntersectionLines.push_back( empty2 );
     int topLineIndex = 0; // if the line jumps cones or passes clipping planes- needs to start a new polyline
     int bottomLineIndex = 0; // if the line jumps cones or passes clipping planes- needs to start a new polyline
-
+    
     
     // gather all intersections with every plane
     for(int p = 0; p < planes.size();p++){
@@ -81,7 +81,7 @@ void ConicSections::drawIntersectionLines(vector<ofxRay::Plane> planes){
         int firstValidBottomStart = -1;
         for(int r = 0; r < topConeRays.size(); r++){
             ofVec3f topIntersect, bottomIntersect;
-
+            
             if(!topConeHidden){
                 if(planes[p].intersect(topConeRays[r], topIntersect)){
                     topIntersections.push_back(topIntersect);
@@ -126,9 +126,9 @@ void ConicSections::drawIntersectionLines(vector<ofxRay::Plane> planes){
                 topIntersectionLines.push_back(polyline);
                 topLineIndex++;
             }
-//        cur.setClosed(true);
+            //        cur.setClosed(true);
         }
-
+        
         ofPolyline empty4;
         bottomIntersectionLines.push_back( empty4 );
         bottomLineIndex++; // if the line jumps cones or passes clipping planes- needs to start a new polyline
@@ -142,7 +142,7 @@ void ConicSections::drawIntersectionLines(vector<ofxRay::Plane> planes){
             }
             //        cur.setClosed(true);
         }
-
+        
         for(int i = 0; i < topIntersectionLines.size(); i++)
             topIntersectionLines[i].draw();
         for(int i = 0; i < bottomIntersectionLines.size(); i++)
@@ -152,14 +152,18 @@ void ConicSections::drawIntersectionLines(vector<ofxRay::Plane> planes){
 
 void ConicSections::drawIntersectionFills(vector<ofxRay::Plane> planes){
     
-//    topIntersectionLines.clear();
-//    bottomIntersectionLines.clear();
+    //    topIntersectionLines.clear();
+    //    bottomIntersectionLines.clear();
     ofPolyline topPolyline, bottomPolyline;
-//    topIntersectionLines.push_back( empty1 );
-//    bottomIntersectionLines.push_back( empty2 );
+    //    topIntersectionLines.push_back( empty1 );
+    //    bottomIntersectionLines.push_back( empty2 );
     
     // gather all intersections with every plane
     for(int p = 0; p < planes.size();p++){
+        
+        bottomPolyline.clear();
+        topPolyline.clear();
+        
         // gather all intersections with this one plane
         vector<ofPoint> topIntersections;
         vector<ofPoint> bottomIntersections;
@@ -169,14 +173,14 @@ void ConicSections::drawIntersectionFills(vector<ofxRay::Plane> planes){
             
             if(!topConeHidden){
                 if(planes[p].intersect(topConeRays[r], topIntersect)){
-                        topIntersections.push_back(topIntersect);
+                    topIntersections.push_back(topIntersect);
                 }
                 else
                     topIntersections.push_back(ofVec3f(-1, -1, -1)); // code for out of bounds
             }
             if(!bottomConeHidden){
                 if(planes[p].intersect(bottomConeRays[r], bottomIntersect)){
-                        bottomIntersections.push_back(bottomIntersect);
+                    bottomIntersections.push_back(bottomIntersect);
                 }
                 else
                     bottomIntersections.push_back(ofVec3f(-1, -1, -1)); // code for out of bounds
