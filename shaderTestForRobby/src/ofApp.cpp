@@ -22,7 +22,7 @@ void ofApp::draw(){
 
     ofBackground(0);
     
-    ofSeedRandom(mouseX);
+    ofSeedRandom(5);
     myShader.begin();
    
     for (int i = 0; i < 1000; i++){

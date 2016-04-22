@@ -6,8 +6,12 @@ void ofApp::setup(){
         polychron[i].loadVefFile("8cell.ascii.txt");
         highlighted[i].clear();
     }
-    hotSpot = ofPoint(ofGetWidth()*.5, ofGetHeight()*.5);
-    hotSpotRadius = 80;
+    hotSpots.push_back( ofPoint(ofGetWidth()*.3, ofGetHeight()*.2) );
+    hotSpots.push_back( ofPoint(ofGetWidth()*.7, ofGetHeight()*.2) );
+    hotSpots.push_back( ofPoint(ofGetWidth()*.5, ofGetHeight()*.75) );
+    hotSpotRadius = 60;
+
+    myShader.load("gradient");
 }
 
 float da1 = 0;
@@ -19,6 +23,10 @@ float ax[NUM_POLY], ay[NUM_POLY], az[NUM_POLY];
 //--------------------------------------------------------------
 void ofApp::update(){
     
+    if (ofGetFrameNum() % 60 == 0){
+        myShader.load("gradient");
+    }
+    
     float SCALE = .002;
     
     da1 = SCALE * sinf(ofGetElapsedTimef()*.022);
@@ -27,30 +35,30 @@ void ofApp::update(){
 
     ax[0] = SCALE * sinf(ofGetElapsedTimef()*.022);
     ax[1] = SCALE * cosf(ofGetElapsedTimef()*.032);
-    ax[2] = SCALE * -sinf(ofGetElapsedTimef()*.092);
+    ax[2] = SCALE * -sinf(ofGetElapsedTimef()*.92);
     ax[3] = SCALE * -cosf(ofGetElapsedTimef()*.046);
     ax[4] = SCALE * sinf(ofGetElapsedTimef()*.027);
     ax[5] = SCALE * cosf(ofGetElapsedTimef()*.032);
-    ax[6] = SCALE * -sinf(ofGetElapsedTimef()*.072);
-    ax[7] = SCALE * -cosf(ofGetElapsedTimef()*.092);
+//    ax[6] = SCALE * -sinf(ofGetElapsedTimef()*.072);
+//    ax[7] = SCALE * -cosf(ofGetElapsedTimef()*.02);
     
     ay[0] = SCALE * sinf(ofGetElapsedTimef()*.055);
     ay[1] = SCALE * cosf(ofGetElapsedTimef()*.039);
-    ay[2] = SCALE * -sinf(ofGetElapsedTimef()*.033);
+    ay[2] = SCALE * -sinf(ofGetElapsedTimef()*.33);
     ay[3] = SCALE * -cosf(ofGetElapsedTimef()*.055);
     ay[4] = SCALE * sinf(ofGetElapsedTimef()*.073);
     ay[5] = SCALE * cosf(ofGetElapsedTimef()*.094);
-    ay[6] = SCALE * -sinf(ofGetElapsedTimef()*.017);
-    ay[7] = SCALE * -cosf(ofGetElapsedTimef()*.039);
+//    ay[6] = SCALE * -sinf(ofGetElapsedTimef()*.017);
+//    ay[7] = SCALE * -cosf(ofGetElapsedTimef()*.039);
     
     az[0] = SCALE * sinf(ofGetElapsedTimef()*.065);
     az[1] = SCALE * cosf(ofGetElapsedTimef()*.035);
-    az[2] = SCALE * -sinf(ofGetElapsedTimef()*.0785);
+    az[2] = SCALE * -sinf(ofGetElapsedTimef()*.785);
     az[3] = SCALE * -cosf(ofGetElapsedTimef()*.0872);
     az[4] = SCALE * sinf(ofGetElapsedTimef()*.081);
     az[5] = SCALE * cosf(ofGetElapsedTimef()*.093);
-    az[6] = SCALE * -sinf(ofGetElapsedTimef()*.028);
-    az[7] = SCALE * -cosf(ofGetElapsedTimef()*.058);
+//    az[6] = SCALE * -sinf(ofGetElapsedTimef()*.028);
+//    az[7] = SCALE * -cosf(ofGetElapsedTimef()*.058);
 
 //    ax[8] = SCALE * sinf(ofGetElapsedTimef()*.062);
 //    ax[9] = SCALE * cosf(ofGetElapsedTimef()*.042);
@@ -110,7 +118,7 @@ ofVec3f ofApp::worldToScreen(ofVec3f WorldXYZ, ofMatrix4x4 additionalTransform) 
     return ScreenXYZ;
 }
 
-bool ofApp::pointInHotspot(ofPoint point){
+bool ofApp::pointInHotspot(ofPoint hotSpot, ofPoint point){
     return ( sqrt( powf(point.x - hotSpot.x, 2) + powf(point.y - hotSpot.y, 2)) < hotSpotRadius );
 }
 
@@ -121,9 +129,10 @@ void ofApp::draw(){
     ofSetColor(255);
     ofDrawBitmapString(ofToString(ofGetFrameRate()),20,20);
     
-    float camRadius = 400;
-//    cam.lookAt(ofPoint(0,0,0));
-//    cam.setPosition(camRadius * sin(ofGetElapsedTimef()*.2), camRadius * cosf(ofGetElapsedTimef()*.2), 100);
+    float camRadius = 100;
+    float camSpeed = .1;
+    cam.lookAt(ofPoint(0,0,0));
+    cam.setPosition(camRadius * sin(ofGetElapsedTimef()*camSpeed), camRadius * cosf(ofGetElapsedTimef()*camSpeed), 100);
     
     
     
@@ -143,6 +152,10 @@ void ofApp::draw(){
 
     ofPushMatrix();
 //    ofScale(100, 100, 100);
+    
+//    myShader.setUniform2f("ptToFadeFrom", ofVec2f(ofGetWidth()/2 + ofRandom(-mouseY,mouseY), ofGetHeight()/2 + ofRandom(-mouseY,mouseY)));
+
+
     for(int i = 0; i < NUM_POLY; i++){
         ofPushMatrix();
         
@@ -154,9 +167,14 @@ void ofApp::draw(){
         polyMatrix.rotate( (floor(i/2)*45), 0, 0, 1);
         polyMatrix.scale(1+i*0.5, 1+i*0.5, 1+i*0.5);
 
+        myShader.begin();
+        myShader.setUniform2f("ptToFadeFrom1", ofVec2f(hotSpots[0].x, ofGetHeight() - hotSpots[0].y));
+        myShader.setUniform2f("ptToFadeFrom2", ofVec2f(hotSpots[1].x, ofGetHeight() - hotSpots[1].y));
+        myShader.setUniform2f("ptToFadeFrom3", ofVec2f(hotSpots[2].x, ofGetHeight() - hotSpots[2].y));
         ofSetColor(255, 50);
         ofMultMatrix(polyMatrix);
         polychron[i].drawWireframe();
+        myShader.end();
         
         
         // CALCULATE the highlighted vertices
@@ -164,7 +182,9 @@ void ofApp::draw(){
         for(int v = 0; v < polychron[i].getNumVertices(); v++){
             Point4D vertex = polychron[i].vertices[v];
             ofVec3f screenLocation = worldToScreen( ofVec3f(vertex.x, vertex.y, vertex.z), polyMatrix );
-            if(pointInHotspot(screenLocation)){
+            if(pointInHotspot(hotSpots[0], screenLocation) ||
+               pointInHotspot(hotSpots[1], screenLocation) ||
+               pointInHotspot(hotSpots[2], screenLocation)){
                 //                if(screenLocation.x < ofGetWidth()*.5){
                 highlighted[i].push_back(v);
                 // vertex energy
@@ -210,6 +230,7 @@ void ofApp::draw(){
 //        }
         ofPopMatrix();
     }
+
     ofPopMatrix();
     cam.end();
 }

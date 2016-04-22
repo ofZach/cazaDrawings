@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "Polychron.h"
 
-#define NUM_POLY 8
+#define NUM_POLY 6
 
 class ofApp : public ofBaseApp{
 
@@ -31,8 +31,10 @@ class ofApp : public ofBaseApp{
     
     ofVec3f worldToScreen(ofVec3f WorldXYZ, ofMatrix4x4 additionalTransform);
 
-    ofPoint hotSpot;
+    vector<ofPoint> hotSpots;
     float hotSpotRadius;
     
-    bool pointInHotspot(ofPoint point);
+    bool pointInHotspot(ofPoint hotspot, ofPoint point);
+
+    ofShader myShader;
 };
