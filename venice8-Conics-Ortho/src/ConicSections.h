@@ -2,6 +2,8 @@
 
 #include "ofxRay.h"
 
+#define DEFAULT_CONE_RESOLUTION 500
+
 class ConicSections : public ofBaseApp{
     
 public:

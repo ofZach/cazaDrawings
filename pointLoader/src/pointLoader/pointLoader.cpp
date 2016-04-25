@@ -25,6 +25,10 @@ void pointLoader::update(){
 
 void pointLoader::draw(){
     for (int i = 0; i < ptData[frame].size(); i++){
+        if(i < 60 && i > 48)
+            ofSetColor(0, 255, 255);
+        else
+            ofSetColor(255, 255, 255);
         ofCircle(ptData[frame][i], 4);
     }
 }
@@ -37,7 +41,7 @@ void pointLoader::parsejson(string fileName){
     
     for (int i = 0; i < jsonDoc.size(); i++){
         vector < ofPoint > pts;
-        cout << jsonDoc[i].size() << endl;
+        cout << i << " "  << jsonDoc[i].size() << endl;
         
         for (int j = 0; j < jsonDoc[i].size(); j++){
             float x =  jsonDoc[i][j][0];

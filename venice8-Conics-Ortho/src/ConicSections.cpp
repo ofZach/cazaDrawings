@@ -1,6 +1,5 @@
 #include "ofApp.h"
 
-#define DEFAULT_CONE_RESOLUTION 500
 #define DEFAULT_CONE_RADIUS 50
 #define DEFAULT_CONE_HEIGHT 100
 
@@ -26,6 +25,8 @@ ConicSections::ConicSections(){
         bottomRay.setEnd(ofPoint(coneRadius*cosf(2*M_PI*i/DEFAULT_CONE_RESOLUTION),
                                  -coneHeight,
                                  coneRadius*sinf(2*M_PI*i/DEFAULT_CONE_RESOLUTION)));
+//        topRay.setParent(topCone);
+//        bottomRay.setParent(bottomCone);
         topConeRays.push_back(topRay);
         bottomConeRays.push_back(bottomRay);
     }
