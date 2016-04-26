@@ -23,6 +23,7 @@ public:
     // functions
     void draw();
     void drawIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal);
+    void fillIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal);
     
     ofVec3f crossProduct(ofVec3f A1, ofVec3f A2);
     float dotProduct(ofVec3f A1, ofVec3f A2);

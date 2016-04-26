@@ -2,7 +2,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    ofNoFill();
+//    ofNoFill();
 }
 
 //--------------------------------------------------------------
@@ -26,12 +26,12 @@ void ofApp::draw(){
     ofSetColor(0, 128, 255);
     plane = ofVec3f(0, 10, 0);
     planeNormal = ofVec3f(0, 11, 0);
-    conics.drawIntersectionsWithPlane(plane, planeNormal);
+    conics.fillIntersectionsWithPlane(plane, planeNormal);
 
     ofSetColor(0, 255, 128);
     plane = ofVec3f(0, 0, -100);
     planeNormal = ofVec3f(0, 0, -101);
-    conics.drawIntersectionsWithPlane(plane, planeNormal);
+    conics.fillIntersectionsWithPlane(plane, planeNormal);
 
     cam.end();
 }

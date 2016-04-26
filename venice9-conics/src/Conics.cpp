@@ -35,6 +35,7 @@ void Conics::drawIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
                 polyline.addVertex(intersect);
             else{
                 polyline.draw();
+                lastDraw = i;
                 polyline.clear();
                 polyline.addVertex(intersect);
             }
@@ -62,6 +63,56 @@ void Conics::drawIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
 //    if(lastDraw != i-1)
         polyline.draw();
 }
+
+void Conics::fillIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
+    ofVec3f intersect;
+    ofVec3f ap = apex.getPosition() * cone.getLocalTransformMatrix();
+    bool lastRound = false;
+    int lastDraw = -1;
+    int i;
+    float thisU, lastU;
+    for(i = 0; i < RESOLUTION; i++){
+        ofVec3f bp = basePoints[i].getPosition() * cone.getLocalTransformMatrix();
+        bool thisRound = linePlaneIntersect(ap, bp, planePt, planeNormal, &intersect, &thisU);
+        if(thisRound && lastRound){
+            // continue the line segment, only if on same side of cone
+            if( ( thisU >= 0 && lastU >= 0) || (thisU < 0 && lastU < 0) )
+                ofVertex(intersect);
+            else{
+                ofEndShape();
+                lastDraw = i;
+                ofBeginShape();
+                ofVertex(intersect);
+            }
+        }
+        else if(thisRound){
+            // new beginning to the polyline
+            ofBeginShape();
+            ofVertex(intersect);
+        }
+        else if(lastRound){
+            // an ending to the current polyline
+            ofEndShape();
+            lastDraw = i;
+        }
+        lastRound = thisRound;
+        lastU = thisU;
+    }
+    
+    // if first and last are both draw, connect them, close the polyline loop
+    ofVec3f firstPoint = basePoints[0].getPosition() * cone.getLocalTransformMatrix();
+    bool firstIndex = linePlaneIntersect(ap, firstPoint, planePt, planeNormal, &intersect, &thisU);
+    if(lastRound && firstIndex && ((thisU >= 0 && lastU >= 0) || (thisU < 0 && lastU < 0)) )
+        ofVertex(intersect);
+//        polyline.addVertex(intersect);
+    
+    //    if(lastDraw != i-1)
+
+//    polyline.draw();
+    ofEndShape(true);
+
+}
+
 
 void Conics::draw(){
     cone.transformGL();
