@@ -15,9 +15,9 @@ void ofApp::update(){
 void ofApp::draw(){
     
     ofClear(0);
+    ofSetLineWidth(3);
     
     cam.begin();
-    ofScale(2, 2, 2);
     ofDrawAxis(20);
     
     ofSetColor(255, 10);

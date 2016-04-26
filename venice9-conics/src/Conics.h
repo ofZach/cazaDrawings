@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 
-#define RESOLUTION 50
+#define RESOLUTION 500
 
 class Conics : public ofBaseApp{
 public:
@@ -26,6 +26,6 @@ public:
     
     ofVec3f crossProduct(ofVec3f A1, ofVec3f A2);
     float dotProduct(ofVec3f A1, ofVec3f A2);
-    bool linePlaneIntersect(ofVec3f *intersection, ofVec3f line0, ofVec3f line1, ofVec3f planeP, ofVec3f planeN);
 
+    bool linePlaneIntersect(ofVec3f linePt1, ofVec3f linePt2, ofVec3f planePt, ofVec3f planeN, ofVec3f *intersection, float *u);
 };

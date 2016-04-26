@@ -21,12 +21,46 @@ Conics::Conics(){
 void Conics::drawIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
     ofVec3f intersect;
     ofVec3f ap = apex.getPosition() * cone.getLocalTransformMatrix();
-    for(int i = 0; i < RESOLUTION; i++){
+    bool lastRound = false;
+    int lastDraw = -1;
+    ofPolyline polyline;
+    int i;
+    float thisU, lastU;
+    for(i = 0; i < RESOLUTION; i++){
         ofVec3f bp = basePoints[i].getPosition() * cone.getLocalTransformMatrix();
-        if(linePlaneIntersect(&intersect, ap, bp, planePt, planeNormal)){
-            ofDrawBox(intersect, 1);
+        bool thisRound = linePlaneIntersect(ap, bp, planePt, planeNormal, &intersect, &thisU);
+        if(thisRound && lastRound){
+            // continue the line segment, only if on same side of cone
+            if( ( thisU >= 0 && lastU >= 0) || (thisU < 0 && lastU < 0) )
+                polyline.addVertex(intersect);
+            else{
+                polyline.draw();
+                polyline.clear();
+                polyline.addVertex(intersect);
+            }
         }
+        else if(thisRound){
+            // new beginning to the polyline
+            polyline.clear();
+            polyline.addVertex(intersect);
+        }
+        else if(lastRound){
+            // an ending to the current polyline
+            polyline.draw();
+            lastDraw = i;
+        }
+        lastRound = thisRound;
+        lastU = thisU;
     }
+
+    // if first and last are both draw, connect them, close the polyline loop
+    ofVec3f firstPoint = basePoints[0].getPosition() * cone.getLocalTransformMatrix();
+    bool firstIndex = linePlaneIntersect(ap, firstPoint, planePt, planeNormal, &intersect, &thisU);
+    if(lastRound && firstIndex && ((thisU >= 0 && lastU >= 0) || (thisU < 0 && lastU < 0)) )
+        polyline.addVertex(intersect);
+
+//    if(lastDraw != i-1)
+        polyline.draw();
 }
 
 void Conics::draw(){
@@ -48,7 +82,7 @@ ofVec3f Conics::crossProduct(ofVec3f a, ofVec3f b){
     return(ofVec3f(x, y, z));
 }
 
-bool Conics::linePlaneIntersect(ofVec3f *intersection, ofVec3f linePt1, ofVec3f linePt2, ofVec3f planePt, ofVec3f planeN){
+bool Conics::linePlaneIntersect(ofVec3f linePt1, ofVec3f linePt2, ofVec3f planePt, ofVec3f planeN, ofVec3f *intersection, float *u){
     // line is defined by 2 points on a line
     // plane is defined by planeP point in the plane with normal planeN
     
@@ -57,9 +91,9 @@ bool Conics::linePlaneIntersect(ofVec3f *intersection, ofVec3f linePt1, ofVec3f 
     float numerator = dotProduct(planeN, (planePt - linePt1) );
     float denominator = dotProduct(planeN, l);
     if(denominator != 0){
-        float u = numerator / denominator;
+        *u = numerator / denominator;
         // BONUS : if u is between 0 and 1, the intersection point is between P1 and P2
-        *intersection = l * u;
+        *intersection = l * *u;
         return true;
     }
     return false;
