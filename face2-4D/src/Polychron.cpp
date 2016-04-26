@@ -32,8 +32,8 @@ ofVec3f Point4D::threeD(){
 //    float a1 = atan( 1/( (x)/(sqrt(powf(w,2)+powf(z,2)+powf(y,2))) ) );
 //    float a2 = atan( 1/( (y)/(sqrt(powf(w,2)+powf(z,2))) ) );
 //    float a3 = 2*atan( 1/( (z + sqrt(powf(w,2) + powf(z,2)))/w ) ); // special case
-//    
-//    
+//
+//
 //}
 
 Polychron::Polychron(){
@@ -51,7 +51,7 @@ void Polychron::loadVefFile(string file) {
     _f.clear();
     edgeEnergy.clear();
     vertexEnergy.clear();
-
+    
     unsigned int numVertices, numEdges, numFaces;
     numVertices = numEdges =  numFaces = 0;
     
@@ -63,7 +63,7 @@ void Polychron::loadVefFile(string file) {
         fin >> point.x >> point.y >> point.z >> point.w;
         vertices.push_back(point);
     }
-
+    
     fin >> numEdges;
     for(int i = 0; i < numEdges; i++){
         unsigned int e1, e2;
@@ -73,13 +73,13 @@ void Polychron::loadVefFile(string file) {
     }
     // wait, faces is not always 4. sometimes it's 5 or 3.
     // need to change approach, need to fin and watch for line endings
-//    fin >> numFaces;
-//    for(int i = 0; i < numFaces; i++){
-//        unsigned int f1, f2;
-//        fin >> f1 >> f2;
-//        faces.push_back(f1);
-//        faces.push_back(f2);
-//    }
+    //    fin >> numFaces;
+    //    for(int i = 0; i < numFaces; i++){
+    //        unsigned int f1, f2;
+    //        fin >> f1 >> f2;
+    //        faces.push_back(f1);
+    //        faces.push_back(f2);
+    //    }
     fin.close();
     
     
@@ -90,7 +90,7 @@ void Polychron::loadVefFile(string file) {
         _e.push_back(edges[i]);
     for(int i = 0; i < faces.size(); i++)
         _f.push_back(faces[i]);
-
+    
     // build characteristics
     for(int i = 0; i < vertices.size(); i++)
         vertexEnergy.push_back(0.0);
@@ -130,6 +130,11 @@ void Polychron::rotate4DOnly(float dwx, float dwy, float dwz){
     rotate(rotation);
 }
 
+void Polychron::rotate4DOnly(ofVec3f dAxes){
+    rotate4DOnly(dAxes[0], dAxes[1], dAxes[2]);
+}
+
+
 vector<unsigned int>Polychron::allVerticesAdjacentTo(unsigned int vertexIndex){
     vector<unsigned int> adjacent;
     for(int i = 0; i < edges.size() * .5; i++){
@@ -155,8 +160,8 @@ vector<unsigned int>Polychron::allEdgesAdjacentTo(unsigned int vertexIndex){
 void Polychron::drawEdgesTouchingVertex(int vertexIndex){
     for(int i = 0; i < edges.size() * .5; i++){
         if(edges[i*2+0] == vertexIndex || edges[i*2+1] == vertexIndex)
-           ofDrawLine(vertices[ edges[i*2+0] ].x, vertices[ edges[i*2+0] ].y, vertices[ edges[i*2+0] ].z,
-                      vertices[ edges[i*2+1] ].x, vertices[ edges[i*2+1] ].y, vertices[ edges[i*2+1] ].z);
+            ofDrawLine(vertices[ edges[i*2+0] ].x, vertices[ edges[i*2+0] ].y, vertices[ edges[i*2+0] ].z,
+                       vertices[ edges[i*2+1] ].x, vertices[ edges[i*2+1] ].y, vertices[ edges[i*2+1] ].z);
     }
 }
 
@@ -168,12 +173,20 @@ unsigned int Polychron::getNumEdges(){
     return edges.size()*.5;
 }
 
+void Polychron::decrementEnergy(){
+    for(int e = 0 ; e < edgeEnergy.size(); e++)
+        edgeEnergy[e] *= 0.98;
+    for(int e = 0 ; e < vertexEnergy.size(); e++)
+        vertexEnergy[e] *= 0.98;
+}
+
 void Polychron::drawWireframe(){
     float pct = 1.0;//0.5 + 0.5 * sin(ofGetElapsedTimef()); //ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 1, true);
     for(int i = 0; i < edges.size() * .5 * pct; i++){
         ofDrawLine(vertices[ edges[i*2+0] ].x, vertices[ edges[i*2+0] ].y, vertices[ edges[i*2+0] ].z,
                    vertices[ edges[i*2+1] ].x, vertices[ edges[i*2+1] ].y, vertices[ edges[i*2+1] ].z);
     }
+    decrementEnergy();
 }
 
 void Polychron::log(){
@@ -181,7 +194,7 @@ void Polychron::log(){
         printf("(%.1f, %.1f, %.1f, %.1f)\n", vertices[i].x, vertices[i].y, vertices[i].z, vertices[i].w);
     for(int i = 0; i < edges.size()*.5; i++)
         printf("(%d, %d)\n", edges[i*2], edges[i*2+1]);
-//    for(int i = 0; i < faces.size()*.5; i++)
-//        printf("(%d, %d)\n", faces[i*2], faces[i*2+1]);
+    //    for(int i = 0; i < faces.size()*.5; i++)
+    //        printf("(%d, %d)\n", faces[i*2], faces[i*2+1]);
     
 }
