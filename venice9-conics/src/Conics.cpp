@@ -2,18 +2,18 @@
 
 Conics::Conics(){
     radius = 50;
-    focus = ofVec3f(0, 0, 0);
-    apex.setPosition(0,0,100);
+    focus = ofVec3f(0, 0, -200);
+    apex.setPosition(0,0,0);
     apex.lookAt( focus );
-    cone.setPosition(0,0,100);
+    cone.setPosition(0,0,0);
     cone.lookAt( focus );
 
-    base.setPosition(0, 0, 0);
+    base.setPosition(0, 0, -100);
     base.setParent( apex );
     
     for(int i = 0; i < RESOLUTION; i++){
         float angle = ofMap(i, 0, RESOLUTION, 0, TWO_PI);
-        basePoints[i].setPosition( radius * ofVec3f( cos(angle), sin(angle), 0 ) );
+        basePoints[i].setPosition( ofVec3f( radius *cos(angle), radius *sin(angle), base.getPosition().z ) );
         basePoints[i].setParent( apex );
     }
 }
