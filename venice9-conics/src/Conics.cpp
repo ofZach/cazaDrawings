@@ -18,6 +18,15 @@ Conics::Conics(){
     }
 }
 
+void Conics::setRadius(float newRadius){
+    radius = newRadius;
+    for(int i = 0; i < RESOLUTION; i++){
+        float angle = ofMap(i, 0, RESOLUTION, 0, TWO_PI);
+        basePoints[i].setPosition( ofVec3f( radius *cos(angle), radius *sin(angle), base.getPosition().z ) );
+    }
+    
+}
+
 void Conics::drawIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
     ofVec3f intersect;
     ofVec3f ap = apex.getPosition() * cone.getLocalTransformMatrix();

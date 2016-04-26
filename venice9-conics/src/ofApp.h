@@ -3,6 +3,8 @@
 #include "ofMain.h"
 #include "Conics.h"
 
+#define NUM_CONES 6
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -22,7 +24,7 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
-    Conics conics;
+    Conics conics[NUM_CONES];
     
     ofVec3f plane, planeNormal;
 

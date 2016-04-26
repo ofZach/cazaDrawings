@@ -9,6 +9,8 @@ public:
     
     Conics();
     
+    void setRadius(float newRadius);
+    
     // the parent node - use to move around
     ofNode cone; // lies at the apex
     
