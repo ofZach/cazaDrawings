@@ -27,6 +27,8 @@ class ofApp : public ofBaseApp{
     Conics conics[NUM_CONES];
     
     ofVec3f plane, planeNormal;
+    
+    ofVec3f movingPlane, movingPlaneNormal;
 
     ofEasyCam cam;
 
