@@ -18,23 +18,47 @@ Conics::Conics(){
     }
 }
 
-void Conics::setRadius(float newRadius){
-    radius = newRadius;
+// setters
+
+void Conics::setHeight(float h){
+    height = h;
+    float diff = h - height;
+    base.setPosition(base.getPosition().x, base.getPosition().y, -h);
+    for(int i = 0; i < RESOLUTION; i++){
+//        basePoints[i].move(0, 0, diff);
+        basePoints[i].setPosition( ofVec3f(basePoints[i].getPosition().x, basePoints[i].getPosition().y, base.getPosition().z) );
+    }
+}
+
+void Conics::setRadius(float r){
+    radius = r;
     for(int i = 0; i < RESOLUTION; i++){
         float angle = ofMap(i, 0, RESOLUTION, 0, TWO_PI);
         basePoints[i].setPosition( ofVec3f( radius *cos(angle), radius *sin(angle), base.getPosition().z ) );
     }
-    
+}
+
+void Conics::setPosition(ofVec3f pos){
+    cone.setPosition(pos);
+    cone.lookAt(focus);
+}
+
+void Conics::setLookAt(ofVec3f look){
+    focus = look;
+    cone.lookAt(focus);
 }
 
 void Conics::drawIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
     ofVec3f intersect;
+//    printf("%f, %f, %f", apex.getPosition().x, apex.getPosition().y, apex.getPosition().z);
     ofVec3f ap = apex.getPosition() * cone.getLocalTransformMatrix();
+//    printf("%f, %f, %f", ap.x, ap.y, ap.z);
     bool lastRound = false;
     int lastDraw = -1;
     ofPolyline polyline;
     int i;
     float thisU, lastU;
+    cone.transformGL();
     for(i = 0; i < RESOLUTION; i++){
         ofVec3f bp = basePoints[i].getPosition() * cone.getLocalTransformMatrix();
         bool thisRound = linePlaneIntersect(ap, bp, planePt, planeNormal, &intersect, &thisU);
@@ -49,13 +73,11 @@ void Conics::drawIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
                 polyline.addVertex(intersect);
             }
         }
-        else if(thisRound){
-            // new beginning to the polyline
+        else if(thisRound){ // new beginning to the polyline
             polyline.clear();
             polyline.addVertex(intersect);
         }
-        else if(lastRound){
-            // an ending to the current polyline
+        else if(lastRound){ // an ending to the current polyline
             polyline.draw();
             lastDraw = i;
         }
@@ -71,6 +93,8 @@ void Conics::drawIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
 
 //    if(lastDraw != i-1)
         polyline.draw();
+    cone.restoreTransformGL();
+
 }
 
 void Conics::fillIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
@@ -94,13 +118,11 @@ void Conics::fillIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
                 ofVertex(intersect);
             }
         }
-        else if(thisRound){
-            // new beginning to the polyline
+        else if(thisRound){ // new beginning to the polyline
             ofBeginShape();
             ofVertex(intersect);
         }
-        else if(lastRound){
-            // an ending to the current polyline
+        else if(lastRound){ // an ending to the current polyline
             ofEndShape();
             lastDraw = i;
         }
@@ -115,8 +137,7 @@ void Conics::fillIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
         ofVertex(intersect);
 //        polyline.addVertex(intersect);
     
-    //    if(lastDraw != i-1)
-
+//    if(lastDraw != i-1)
 //    polyline.draw();
     ofEndShape(true);
 

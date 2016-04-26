@@ -10,12 +10,14 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    float SPEED = .7;
+    float SPEED = .2;
     float diff = .3 * sinf(ofGetElapsedTimef()*.2);
     for(int i = 0 ;i < NUM_CONES; i++){
-        conics[i].cone.setPosition(400*ofNoise(ofGetElapsedTimef()*SPEED + diff*i)-200,
-                                   400*ofNoise(10+ofGetElapsedTimef()*SPEED + diff*i)-200, 0);
-        conics[i].cone.lookAt(conics[i].focus);
+        conics[i].setPosition( ofVec3f(400*ofNoise(ofGetElapsedTimef()*SPEED + diff*i)-200,
+                                       400*ofNoise(10+ofGetElapsedTimef()*SPEED + diff*i)-200,
+                                       0) );
+//        conics[i].setHeight(300 + 250 * sinf(2*i+ofGetElapsedTimef()));
+//        conics[i].setRadius(100 + 90 * sinf(2*i+ofGetElapsedTimef()*.3));
     }
 }
 
@@ -23,7 +25,7 @@ void ofApp::update(){
 void ofApp::draw(){
     
     ofClear(0);
-    ofSetLineWidth(3);
+    ofSetLineWidth(1);
     
     cam.begin();
     ofDrawAxis(20);
@@ -33,14 +35,14 @@ void ofApp::draw(){
         conics[i].draw();
     
     ofSetColor(0, 128, 255);
-    plane = ofVec3f(0, 10, 0);
-    planeNormal = ofVec3f(0, 11, 0);
+    plane = ofVec3f(0, 25, 0);
+    planeNormal = ofVec3f(0, 1, 0);
     for(int i = 0 ;i < NUM_CONES; i++)
         conics[i].drawIntersectionsWithPlane(plane, planeNormal);
 
     ofSetColor(0, 255, 128);
-    plane = ofVec3f(0, 0, -200);
-    planeNormal = ofVec3f(0, 0, -101);
+    plane = ofVec3f(0, 0, -50);
+    planeNormal = ofVec3f(0, 0, 1);
     for(int i = 0 ;i < NUM_CONES; i++)
         conics[i].drawIntersectionsWithPlane(plane, planeNormal);
 

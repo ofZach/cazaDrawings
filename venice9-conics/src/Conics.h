@@ -9,8 +9,18 @@ public:
     
     Conics();
     
-    void setRadius(float newRadius);
-    
+    // setters
+    void setRadius(float r);
+    void setHeight(float h);
+    void setPosition(ofVec3f pos);
+    void setLookAt(ofVec3f look);
+
+    // draw
+    void draw();
+    void drawIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal);
+    void fillIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal);
+
+private:
     // the parent node - use to move around
     ofNode cone; // lies at the apex
     
@@ -18,14 +28,11 @@ public:
     ofNode apex;  // the tip of the cone
     ofNode base;  // center of the base plane
     float radius; // radius of the base plane
+    float height;
     ofVec3f focus; // the direction the cone faces
     
     ofNode basePoints[RESOLUTION];
     
-    // functions
-    void draw();
-    void drawIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal);
-    void fillIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal);
     
     ofVec3f crossProduct(ofVec3f A1, ofVec3f A2);
     float dotProduct(ofVec3f A1, ofVec3f A2);

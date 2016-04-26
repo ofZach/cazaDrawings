@@ -3,7 +3,7 @@
 #include "ofMain.h"
 #include "Conics.h"
 
-#define NUM_CONES 6
+#define NUM_CONES 2
 
 class ofApp : public ofBaseApp{
 
