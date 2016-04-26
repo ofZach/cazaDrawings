@@ -130,11 +130,6 @@ void Polychron::rotate4DOnly(float dwx, float dwy, float dwz){
     rotate(rotation);
 }
 
-void Polychron::rotate4DOnly(ofVec3f dAxes){
-    rotate4DOnly(dAxes[0], dAxes[1], dAxes[2]);
-}
-
-
 vector<unsigned int>Polychron::allVerticesAdjacentTo(unsigned int vertexIndex){
     vector<unsigned int> adjacent;
     for(int i = 0; i < edges.size() * .5; i++){
@@ -173,20 +168,12 @@ unsigned int Polychron::getNumEdges(){
     return edges.size()*.5;
 }
 
-void Polychron::decrementEnergy(){
-    for(int e = 0 ; e < edgeEnergy.size(); e++)
-        edgeEnergy[e] *= 0.98;
-    for(int e = 0 ; e < vertexEnergy.size(); e++)
-        vertexEnergy[e] *= 0.98;
-}
-
 void Polychron::drawWireframe(){
     float pct = 1.0;//0.5 + 0.5 * sin(ofGetElapsedTimef()); //ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 1, true);
     for(int i = 0; i < edges.size() * .5 * pct; i++){
         ofDrawLine(vertices[ edges[i*2+0] ].x, vertices[ edges[i*2+0] ].y, vertices[ edges[i*2+0] ].z,
                    vertices[ edges[i*2+1] ].x, vertices[ edges[i*2+1] ].y, vertices[ edges[i*2+1] ].z);
     }
-    decrementEnergy();
 }
 
 void Polychron::log(){

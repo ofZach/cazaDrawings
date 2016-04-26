@@ -23,7 +23,6 @@ public:
     // proper rotaiton (includes all 4D)
     void rotate(ofMatrix4x4 m); // cumulative.  all 4 cols/rows are rotation, not 3&1 translation like 3D opengl
     void rotate4DOnly(float dwx, float dwy, float dwz);  // non cumulative
-    void rotate4DOnly(ofVec3f dAxes);  // non cumulative
     
     unsigned int getNumVertices();
     unsigned int getNumEdges();
@@ -40,8 +39,6 @@ public:
     vector<unsigned int>allEdgesAdjacentTo(unsigned int vertexIndex);
     vector<unsigned int>allVerticesAdjacentTo(unsigned int vertexIndex);
     void drawEdgesTouchingVertex(int vertexIndex);
-    
-    void decrementEnergy();
     
     void log();  // printf vertices, edges, faces
     

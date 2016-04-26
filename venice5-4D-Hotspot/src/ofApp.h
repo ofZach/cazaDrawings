@@ -24,11 +24,17 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
+    ofEasyCam cam;
+
     Polychron polychron[NUM_POLY];
     vector<unsigned int> highlighted[NUM_POLY];
-
-    ofEasyCam cam;
     
+    ofVec3f rotations[NUM_POLY];
+    
+    // any transformation has to be run through here, if is to be reverse-calculated back into 2D screen coords
+    ofMatrix4x4 polyMatrix[NUM_POLY];
+    ofMatrix4x4 faceMatrix;
+
     ofVec3f worldToScreen(ofVec3f WorldXYZ, ofMatrix4x4 additionalTransform);
 
     vector<ofPoint> hotSpots;
