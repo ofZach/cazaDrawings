@@ -9,12 +9,16 @@ void ofApp::setup(){
     
     gui.setup();
     gui.add(numPoly.setup("how many?", 6, 1, NUM_POLY));
-    gui.add(radiusScale.setup("change in scale", 0, 0, 1));
+    gui.add(grid.setup("grid", false));
+    gui.add(gridGap.setup("grid space", 2.5, 1, 10));
+    gui.add(indexed.setup("changes index based", false));
+    gui.add(radiusScale.setup("scale", 0, 0, 1));
     gui.add(angleOffset.setup("angle offset", ofVec3f(0, 0, 0), ofVec3f(0, 0, 0),  ofVec3f(180, 180, 180) ));
 
     gui.add(fourDAnimated.setup("4D animated", false));
     gui.add(fourD.setup("4th dimension, w * _", ofVec3f(0, 0, 0), ofVec3f(-90, -90, -90),  ofVec3f(90, 90, 90) ));
-    gui.add(compression.setup("compression", ofVec3f(0, 0, 0), ofVec3f(-.99, -.99, -.99),  ofVec3f(2, 2, 2) ));
+//    gui.add(compression.setup("compression", ofVec3f(0, 0, 0), ofVec3f(-.99, -.99, -.99),  ofVec3f(2, 2, 2) ));
+    compression.setup("compression", ofVec3f(0, 0, 0), ofVec3f(-.99, -.99, -.99),  ofVec3f(2, 2, 2) );
 
     gui.add(rotAnimations.setup("scatter rotation", false));
     gui.add(rotAnimSpeed.setup(" - [speed]", 10, .01, 30));
@@ -38,16 +42,28 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
+    
+    int num;
+    if(grid) num = NUM_POLY;
+    else num = numPoly;
+    
+
     if(fourDAnimated){
         float SCALE = 0.0001;
-        for(int i = 0; i < numPoly; i++){
-            polychron[i].rotate4DOnly(SCALE * (i+1) * fourD->x, SCALE * (i+1) * fourD->y, SCALE * (i+1) * fourD->z);
+        for(int i = 0; i < num; i++){
+            if(indexed)
+                polychron[i].rotate4DOnly(SCALE * (i+1) * fourD->x, SCALE * (i+1) * fourD->y, SCALE * (i+1) * fourD->z);
+            else
+                polychron[i].rotate4DOnly(SCALE * fourD->x, SCALE * fourD->y, SCALE * fourD->z);
         }
     }
     else{
         float SCALE = 0.01;
-        for(int i = 0; i < numPoly; i++){
-            polychron[i].rotate4DOnlyOnce(SCALE * (i+1) * fourD->x, SCALE * (i+1) * fourD->y, SCALE * (i+1) * fourD->z);
+        for(int i = 0; i < num; i++){
+            if(indexed)
+                polychron[i].rotate4DOnlyOnce(SCALE * (i+1) * fourD->x, SCALE * (i+1) * fourD->y, SCALE * (i+1) * fourD->z);
+            else
+                polychron[i].rotate4DOnlyOnce(SCALE * fourD->x, SCALE * fourD->y, SCALE * fourD->z);
         }
     }
 }
@@ -71,13 +87,28 @@ void ofApp::draw(){
     
     ofScale(100, 100, 100);
     
-    for(int i = 0; i < numPoly; i++){
+    int num;
+    if(grid) num = NUM_POLY;
+    else num = numPoly;
+    for(int i = 0; i < num; i++){
         ofPushMatrix();
-        ofScale(1 + radiusScale * i, 1 + radiusScale * i, 1 + radiusScale * i);
-        ofScale(1 + compression->x * (i+1), 1 + compression->y * (i+1), 1 + compression->z * (i+1));
-        ofRotate(i * angleOffset->x, 1, 0, 0);
-        ofRotate(i * angleOffset->y, 0, 1, 0);
-        ofRotate(i * angleOffset->z, 0, 0, 1);
+        if(grid){
+            ofTranslate( gridGap * (i%5 - 2), gridGap * ((int)(i/5.0) - 2), 0);
+        }
+        if(indexed){
+            ofScale(1 + radiusScale * i, 1 + radiusScale * i, 1 + radiusScale * i);
+            ofScale(1 + compression->x * (i+1), 1 + compression->y * (i+1), 1 + compression->z * (i+1));
+            ofRotate(i * angleOffset->x, 1, 0, 0);
+            ofRotate(i * angleOffset->y, 0, 1, 0);
+            ofRotate(i * angleOffset->z, 0, 0, 1);
+        }
+        else{
+            ofScale(1 + radiusScale, 1 + radiusScale, 1 + radiusScale);
+            ofScale(1 + compression->x, 1 + compression->y, 1 + compression->z);
+            ofRotate(angleOffset->x, 1, 0, 0);
+            ofRotate(angleOffset->y, 0, 1, 0);
+            ofRotate(angleOffset->z, 0, 0, 1);
+        }
 //        ofMultMatrix(polyMatrix[i]);
         if(rotAnimations){
             ofRotate(rotAnimMag * sinf(ofGetElapsedTimef()*rotations[i].x * rotAnimSpeed), 1, 0, 0);

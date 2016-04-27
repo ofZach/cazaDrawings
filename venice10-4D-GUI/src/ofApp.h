@@ -4,7 +4,7 @@
 #include "ofxGui.h"
 #include "Polychron.h"
 
-#define NUM_POLY 20
+#define NUM_POLY 25
 
 class ofApp : public ofBaseApp{
 
@@ -36,9 +36,12 @@ class ofApp : public ofBaseApp{
     ofxIntSlider numPoly;
     ofxFloatSlider radiusScale;
     ofxVec3Slider angleOffset;
+    ofxToggle indexed;
     ofxToggle fourDAnimated;
     ofxVec3Slider fourD;
     ofxVec3Slider compression;
+    ofxToggle grid;
+    ofxFloatSlider gridGap;
 
     ofxToggle rotAnimations;
     ofxFloatSlider rotAnimSpeed;
