@@ -1,9 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "Conics.h"
-
-#define NUM_CONES 100
 
 class ofApp : public ofBaseApp{
 
@@ -23,13 +20,7 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+    
+    
 		
-    Conics conics[NUM_CONES];
-    
-    ofVec3f plane, planeNormal;
-    
-    ofVec3f movingPlane, movingPlaneNormal;
-
-    ofEasyCam cam;
-
 };
