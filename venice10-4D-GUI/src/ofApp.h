@@ -25,32 +25,34 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
+    
+    ofEasyCam cam;
+    
+    Polychron polychron[NUM_POLY];
+    ofVec3f rotations[NUM_POLY];
+    
     ofxPanel gui;
-//    ofParameterGroup polyGroup;
-//    ofParameterGroup sceneGroup;
-    // polychrons
+    // hypercubes
     ofxIntSlider numPoly;
     ofxFloatSlider radiusScale;
     ofxVec3Slider angleOffset;
     ofxToggle fourDAnimated;
     ofxVec3Slider fourD;
     ofxVec3Slider compression;
-    ofxFloatSlider zoom;
+
+    ofxToggle rotAnimations;
+    ofxFloatSlider rotAnimSpeed;
+    ofxFloatSlider rotAnimMag;
+
+    ofxToggle posAnimations;
+    ofxFloatSlider posAnimSpeed;
+    ofxFloatSlider posAnimMag;
+
     // camera
     ofxFloatSlider cameraDistance;
     ofxToggle autoCamera;
-    ofxToggle tiledToggle;
 
-//    ofxFloatSlider radius;
-    ofxColorSlider color;
-    ofxIntSlider circleResolution;
-    ofxToggle filled;
-    ofxButton twoCircles;
-    ofxButton ringButton;
-    ofxLabel screenSize;
-    
-    ofEasyCam cam;
-    
-    Polychron polychron[NUM_POLY];
-    ofVec3f rotations[NUM_POLY];
+//    ofxColorSlider color;
+//    ofxButton ringButton;
+//    ofxLabel screenSize;
 };
