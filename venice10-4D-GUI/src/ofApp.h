@@ -32,12 +32,14 @@ class ofApp : public ofBaseApp{
     ofxIntSlider numPoly;
     ofxFloatSlider radiusScale;
     ofxVec3Slider angleOffset;
+    ofxToggle fourDAnimated;
     ofxVec3Slider fourD;
     ofxVec3Slider compression;
     ofxFloatSlider zoom;
     // camera
     ofxFloatSlider cameraDistance;
     ofxToggle autoCamera;
+    ofxToggle tiledToggle;
 
 //    ofxFloatSlider radius;
     ofxColorSlider color;

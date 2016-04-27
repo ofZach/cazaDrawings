@@ -15,14 +15,18 @@ void ofApp::setup(){
 //    gui.add(compression.setup("compression", true));
 //    polyGroup.setName("Hypercubes");
     gui.add(numPoly.setup("how many?", 6, 1, NUM_POLY));
-    gui.add(radiusScale.setup("radius scale", 0, 0, 1));
+    gui.add(radiusScale.setup("change in scale", 0, 0, 1));
     gui.add(angleOffset.setup("angle offset", ofVec3f(0, 0, 0), ofVec3f(0, 0, 0),  ofVec3f(180, 180, 180) ));
     gui.add(zoom.setup("nothing", 1, .1, 10));
-    gui.add(fourD.setup("4th dimension", ofVec3f(0, 0, 0), ofVec3f(-90, -90, -90),  ofVec3f(90, 90, 90) ));
-    gui.add(compression.setup("compression", ofVec3f(1, 1, 1), ofVec3f(.1, .1, .1),  ofVec3f(10, 10, 10) ));
+    gui.add(fourDAnimated.setup("4D animated", false));
+    gui.add(fourD.setup("4th dimension, w * _", ofVec3f(0, 0, 0), ofVec3f(-90, -90, -90),  ofVec3f(90, 90, 90) ));
+    gui.add(compression.setup("compression", ofVec3f(0, 0, 0), ofVec3f(-.99, -.99, -.99),  ofVec3f(2, 2, 2) ));
 //    sceneGroup.setName("Scene");
     gui.add(autoCamera.setup("camera animated", false));
-    gui.add(cameraDistance.setup("anim cam dist", 100, 1, 1000));
+    gui.add(cameraDistance.setup("anim cam dist", 100, 1, 3000));
+
+    gui.add(tiledToggle.setup("tiled", false));
+    
 //    gui.add(polyGroup);
 //    gui.add(sceneGroup);
 //    gui.add(center.setup("center", ofVec2f(ofGetWidth()*.5, ofGetHeight()*.5), ofVec2f(0, 0), ofVec2f(ofGetWidth(), ofGetHeight())));
@@ -48,9 +52,17 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    float SCALE = .0001;
-    for(int i = 0; i < numPoly; i++){
-        polychron[i].rotate4DOnly(SCALE * (i+1) * fourD->x, SCALE * (i+1) * fourD->y, SCALE * (i+1) * fourD->z);
+    if(fourDAnimated){
+        float SCALE = 0.0001;
+        for(int i = 0; i < numPoly; i++){
+            polychron[i].rotate4DOnly(SCALE * (i+1) * fourD->x, SCALE * (i+1) * fourD->y, SCALE * (i+1) * fourD->z);
+        }
+    }
+    else{
+        float SCALE = 0.01;
+        for(int i = 0; i < numPoly; i++){
+            polychron[i].rotate4DOnlyOnce(SCALE * (i+1) * fourD->x, SCALE * (i+1) * fourD->y, SCALE * (i+1) * fourD->z);
+        }
     }
 }
 
@@ -76,6 +88,7 @@ void ofApp::draw(){
     for(int i = 0; i < numPoly; i++){
         ofPushMatrix();
         ofScale(1 + radiusScale * i, 1 + radiusScale * i, 1 + radiusScale * i);
+        ofScale(1 + compression->x * i, 1 + compression->y * i, 1 + compression->z * i);
         ofRotate(i * angleOffset->x, 1, 0, 0);
         ofRotate(i * angleOffset->y, 0, 1, 0);
         ofRotate(i * angleOffset->z, 0, 0, 1);
