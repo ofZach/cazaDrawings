@@ -136,11 +136,13 @@ void ofApp::draw(){
 
     
     cam.begin();
-    ofSetColor(255, 64);
-    ofPushMatrix();
-    ofMultMatrix(faceMatrix);
-    PL.draw();
-    ofPopMatrix();
+
+//    // draw face
+//    ofSetColor(255, 64);
+//    ofPushMatrix();
+//    ofMultMatrix(faceMatrix);
+//    PL.draw();
+//    ofPopMatrix();
     
    
     
