@@ -24,6 +24,7 @@ public:
     void rotate(ofMatrix4x4 m); // cumulative.  all 4 cols/rows are rotation, not 3&1 translation like 3D opengl
     void rotate4DOnly(float dwx, float dwy, float dwz);  // non cumulative
     void rotate4DOnly(ofVec3f dAxes);  // non cumulative
+    void rotate4DOnlyOnce(float dwx, float dwy, float dwz);
     
     unsigned int getNumVertices();
     unsigned int getNumEdges();

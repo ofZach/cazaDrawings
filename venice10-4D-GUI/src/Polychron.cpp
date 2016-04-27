@@ -135,6 +135,30 @@ void Polychron::rotate4DOnly(ofVec3f dAxes){
 }
 
 
+void Polychron::rotate4DOnlyOnce(float dwx, float dwy, float dwz){
+    wx = dwx;
+    wy = dwy;
+    wz = dwz;
+    
+    ofMatrix4x4 rotateA1 = ofMatrix4x4(cosf(wx), 0,        0, -sinf(wx),
+                                       0,        1,        0,         0,
+                                       0,        0,        1,         0,
+                                       sinf(wx), 0,        0,   cosf(wx) );
+    ofMatrix4x4 rotateA2 = ofMatrix4x4(1,         0,        0,         0,
+                                       0,  cosf(wy),        0, -sinf(wy),
+                                       0,         0,        1,         0,
+                                       0,  sinf(wy),        0,  cosf(wy) );
+    ofMatrix4x4 rotateA3 = ofMatrix4x4(1,         0,        0,         0,
+                                       0,         1,        0,         0,
+                                       0,         0, cosf(wz), -sinf(wz),
+                                       0,         0, sinf(wz),  cosf(wz) );
+    ofMatrix4x4 rotation = ofMatrix4x4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+    rotation *= rotateA1;
+    rotation *= rotateA2;
+    rotation *= rotateA3;
+    rotate(rotation);
+}
+
 vector<unsigned int>Polychron::allVerticesAdjacentTo(unsigned int vertexIndex){
     vector<unsigned int> adjacent;
     for(int i = 0; i < edges.size() * .5; i++){
