@@ -10,7 +10,7 @@ void ofApp::setup(){
     gui.setup();
     gui.add(numPoly.setup("how many?", 6, 1, NUM_POLY));
     gui.add(grid.setup("grid", false));
-    gui.add(gridGap.setup("grid space", 2.5, 1, 10));
+    gui.add(gridGap.setup("grid space", 2.5, 0, 10));
     gui.add(indexed.setup("changes index based", false));
     gui.add(radiusScale.setup("scale", 0, 0, 1));
     gui.add(angleOffset.setup("angle offset", ofVec3f(0, 0, 0), ofVec3f(0, 0, 0),  ofVec3f(180, 180, 180) ));
@@ -22,11 +22,11 @@ void ofApp::setup(){
 
     gui.add(rotAnimations.setup("scatter rotation", false));
     gui.add(rotAnimSpeed.setup(" - [speed]", 10, .01, 30));
-    gui.add(rotAnimMag.setup(" - [magnitude]", 1, .1, 90));
+    gui.add(rotAnimMag.setup(" - [magnitude]", 1, 0, 90));
 
     gui.add(posAnimations.setup("scatter position", false));
     gui.add(posAnimSpeed.setup(" - [speed]", 1, .01, 30));
-    gui.add(posAnimMag.setup(" - [magnitude]", 1, .1, 5));
+    gui.add(posAnimMag.setup(" - [magnitude]", 1, 0, 5));
 
     gui.add(autoCamera.setup("camera animated", false));
     gui.add(cameraDistance.setup("anim cam dist", 100, 1, 3000));
@@ -110,17 +110,17 @@ void ofApp::draw(){
             ofRotate(angleOffset->z, 0, 0, 1);
         }
 //        ofMultMatrix(polyMatrix[i]);
-        if(rotAnimations){
-            ofRotate(rotAnimMag * sinf(ofGetElapsedTimef()*rotations[i].x * rotAnimSpeed), 1, 0, 0);
-            ofRotate(rotAnimMag * sinf(ofGetElapsedTimef()*rotations[i].y * rotAnimSpeed), 0, 1, 0);
-            ofRotate(rotAnimMag * sinf(ofGetElapsedTimef()*rotations[i].z * rotAnimSpeed), 0, 0, 1);
-        }
         if(posAnimations){
             ofTranslate(posAnimMag * sinf(ofGetElapsedTimef()*rotations[i].x * posAnimSpeed),
                         posAnimMag * sinf(ofGetElapsedTimef()*rotations[i].y * posAnimSpeed),
                         posAnimMag * sinf(ofGetElapsedTimef()*rotations[i].z * posAnimSpeed) );
         }
-        ofSetColor(255, 50);
+        if(rotAnimations){
+            ofRotate(rotAnimMag * sinf(ofGetElapsedTimef()*rotations[i].x * rotAnimSpeed), 1, 0, 0);
+            ofRotate(rotAnimMag * sinf(ofGetElapsedTimef()*rotations[i].y * rotAnimSpeed), 0, 1, 0);
+            ofRotate(rotAnimMag * sinf(ofGetElapsedTimef()*rotations[i].z * rotAnimSpeed), 0, 0, 1);
+        }
+        ofSetColor(255, 90);
         polychron[i].drawWireframe();
         
         ofPopMatrix();
