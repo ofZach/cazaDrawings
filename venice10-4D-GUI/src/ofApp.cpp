@@ -9,6 +9,7 @@ void ofApp::setup(){
     
     gui.setup();
     gui.add(numPoly.setup("how many?", 6, 1, NUM_POLY));
+    gui.add(brightness.setup("brightness", 100, 0, 255));
     gui.add(grid.setup("grid", false));
     gui.add(gridGap.setup("grid space", 2.5, 0, 10));
     gui.add(indexed.setup("changes index based", false));
@@ -51,18 +52,18 @@ void ofApp::update(){
     if(fourDAnimated){
         float SCALE = 0.0001;
         for(int i = 0; i < num; i++){
-            if(indexed)
-                polychron[i].rotate4DOnly(SCALE * (i+1) * fourD->x, SCALE * (i+1) * fourD->y, SCALE * (i+1) * fourD->z);
-            else
+//            if(indexed)
+//                polychron[i].rotate4DOnly(SCALE * (i+1) * fourD->x, SCALE * (i+1) * fourD->y, SCALE * (i+1) * fourD->z);
+//            else
                 polychron[i].rotate4DOnly(SCALE * fourD->x, SCALE * fourD->y, SCALE * fourD->z);
         }
     }
     else{
         float SCALE = 0.01;
         for(int i = 0; i < num; i++){
-            if(indexed)
-                polychron[i].rotate4DOnlyOnce(SCALE * (i+1) * fourD->x, SCALE * (i+1) * fourD->y, SCALE * (i+1) * fourD->z);
-            else
+//            if(indexed)
+//                polychron[i].rotate4DOnlyOnce(SCALE * (i+1) * fourD->x, SCALE * (i+1) * fourD->y, SCALE * (i+1) * fourD->z);
+//            else
                 polychron[i].rotate4DOnlyOnce(SCALE * fourD->x, SCALE * fourD->y, SCALE * fourD->z);
         }
     }
@@ -95,16 +96,17 @@ void ofApp::draw(){
         if(grid){
             ofTranslate( gridGap * (i%5 - 2), gridGap * ((int)(i/5.0) - 2), 0);
         }
+        // indexed
+//        ofScale(1 + radiusScale * i, 1 + radiusScale * i, 1 + radiusScale * i);
+//        ofScale(1 + compression->x * (i+1), 1 + compression->y * (i+1), 1 + compression->z * (i+1));
+        ofScale(1 + radiusScale, 1 + radiusScale, 1 + radiusScale);
+        ofScale(1 + compression->x, 1 + compression->y, 1 + compression->z);
         if(indexed){
-            ofScale(1 + radiusScale * i, 1 + radiusScale * i, 1 + radiusScale * i);
-            ofScale(1 + compression->x * (i+1), 1 + compression->y * (i+1), 1 + compression->z * (i+1));
             ofRotate(i * angleOffset->x, 1, 0, 0);
             ofRotate(i * angleOffset->y, 0, 1, 0);
             ofRotate(i * angleOffset->z, 0, 0, 1);
         }
         else{
-            ofScale(1 + radiusScale, 1 + radiusScale, 1 + radiusScale);
-            ofScale(1 + compression->x, 1 + compression->y, 1 + compression->z);
             ofRotate(angleOffset->x, 1, 0, 0);
             ofRotate(angleOffset->y, 0, 1, 0);
             ofRotate(angleOffset->z, 0, 0, 1);
@@ -120,7 +122,7 @@ void ofApp::draw(){
             ofRotate(rotAnimMag * sinf(ofGetElapsedTimef()*rotations[i].y * rotAnimSpeed), 0, 1, 0);
             ofRotate(rotAnimMag * sinf(ofGetElapsedTimef()*rotations[i].z * rotAnimSpeed), 0, 0, 1);
         }
-        ofSetColor(255, 90);
+        ofSetColor(255, brightness);
         polychron[i].drawWireframe();
         
         ofPopMatrix();

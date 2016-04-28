@@ -50,7 +50,9 @@ class ofApp : public ofBaseApp{
     ofxToggle posAnimations;
     ofxFloatSlider posAnimSpeed;
     ofxFloatSlider posAnimMag;
-
+    
+    ofxFloatSlider brightness;
+    
     // camera
     ofxFloatSlider cameraDistance;
     ofxToggle autoCamera;
