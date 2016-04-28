@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     for(int i = 0; i < NUM_CONES; i++){
-        conics[i].setRadius(40 + 10*i);
+        conics[i].setRadius(40 + 4*i);
         conics[i].setPosition( ofVec3f(0, 0, 0) );
         conics[i].setLookAt( ofVec3f(0, 0, 1) );
     }
@@ -33,14 +33,15 @@ void ofApp::draw(){
     static float PHI_ANGLE = 0.618 * M_PI;
 
     for(int i = 0 ;i < NUM_CONES; i++){
-        float diff = powf(sinf(ofGetElapsedTimef()*.2), 2);
-        float zindex = 20 + 500 * powf(sinf(ofGetElapsedTimef() * .5), 2);
-        plane = ofVec3f(0, 0, 100);
-        planeNormal = ofVec3f(50 * cosf(ofGetElapsedTimef()+i*PHI_ANGLE * diff), 50 * sinf(ofGetElapsedTimef()+i*PHI_ANGLE * diff), zindex);
+        conics[i].setLookAt( ofVec3f(cosf(ofGetElapsedTimef()*.8), sinf(ofGetElapsedTimef()*.66), 1) );
+        plane = ofVec3f(60*powf((cosf(ofGetElapsedTimef()*.4444 + i*.4)), 5),
+                        60*powf((sinf(ofGetElapsedTimef()*.55555 + i*.4)), 5),
+                        100 + 100 * sinf(ofGetElapsedTimef()) );
+        planeNormal = ofVec3f(50 * cosf(ofGetElapsedTimef()+i*.1),
+                              50 * sinf(ofGetElapsedTimef()+i*.1),
+                              100+ 80 * sinf(ofGetElapsedTimef() + 1/(i*PHI_ANGLE)) );
         conics[i].drawIntersectionsWithPlane(plane, planeNormal);
     }
-
-    
 
     cam.end();
 }
