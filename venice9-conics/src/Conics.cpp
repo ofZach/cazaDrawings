@@ -96,6 +96,7 @@ void Conics::fillIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
     float thisU, lastU;
     ofPushMatrix();
     ofTranslate(apex * cone.getLocalTransformMatrix());
+    ofBeginShape(); // added for fills that are only on one side of the cone
     for(i = 0; i < RESOLUTION; i++){
         ofVec3f bp = basePoints[i] * cone.getLocalTransformMatrix();
         bool thisRound = linePlaneIntersect(ap, bp, planePt, planeNormal, &intersect, &thisU);
@@ -111,11 +112,11 @@ void Conics::fillIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
             }
         }
         else if(thisRound){ // new beginning to the polyline
-            ofBeginShape();
+//            ofBeginShape();
             ofVertex(intersect);
         }
         else if(lastRound){ // an ending to the current polyline
-            ofEndShape();
+//            ofEndShape();
             lastDraw = i;
         }
         lastRound = thisRound;

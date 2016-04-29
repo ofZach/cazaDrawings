@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 
-#define RESOLUTION 100
+#define RESOLUTION 500
 
 // set flag to 1 for only 1 side of cone
 #define SINGLE_SIDED 1
