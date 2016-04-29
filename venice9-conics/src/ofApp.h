@@ -3,7 +3,8 @@
 #include "ofMain.h"
 #include "Conics.h"
 
-#define NUM_CONES 1
+#define NUM_CONES 3
+#define NUM_PLANES 3
 
 class ofApp : public ofBaseApp{
 
@@ -31,5 +32,7 @@ class ofApp : public ofBaseApp{
     ofVec3f movingPlane, movingPlaneNormal;
 
     ofEasyCam cam;
+    
+    bool showCones;
 
 };

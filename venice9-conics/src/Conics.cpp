@@ -131,8 +131,8 @@ void Conics::fillIntersectionsWithPlane(ofVec3f planePt, ofVec3f planeNormal){
 //        polyline.addVertex(intersect);
     
 //    if(lastDraw != i-1)
+        ofEndShape();
 //    polyline.draw();
-    ofEndShape(true);
     ofPopMatrix();
 }
 
