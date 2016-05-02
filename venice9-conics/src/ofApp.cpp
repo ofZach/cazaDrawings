@@ -2,18 +2,43 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    conics[0].setRadius(40);
-    conics[1].setRadius(40);
-    conics[2].setRadius(160);
+    for(int i = 0; i < NUM_CONES; i++){
+        conics[i].setRadius(40 + 4*i);
+        conics[i].setPosition( ofVec3f(0, 0, 0) );
+        conics[i].setLookAt( ofVec3f(0, 0, 1) );
+    }
+    
+    gui.setup();
+    gui.add(numCones.setup("number of cones", 32, 1, 64));
+//    gui.add(indexed.setup("changes index based", false));
+    
+    gui.add(planeXYTilt.setup("TILT (x y)", 15, -100, 100));
+    gui.add(planeXYTiltPeriod.setup("   - animate", 0, 0, 1));
+    gui.add(planeXYTiltPhase.setup("   - phase", 0, 0, 1));
+    gui.add(planeZTilt.setup("TILT (z)", 50, 1, 100));
+    gui.add(planeZTiltPeriod.setup("   - animate", 0, 0, 1));
+    gui.add(planeZTiltPhase.setup("   - phase", 0, 0, 1));
 
-    conics[0].setPosition( ofVec3f(-80, 0, 0) );
-    conics[0].setLookAt( ofVec3f(-80, 0, 1) );
+    
+    gui.add(planeXY.setup("POSITION (x y)", 50, 0, 100));
+    gui.add(planeXYPeriod.setup("   - animate", 0, 0, 1));
+    gui.add(planeXYPhase.setup("   - phase", 0, 0, 1));
+    gui.add(planeZ.setup("POSITION (z)", 50, 0, 100));
+    gui.add(planeZPeriod.setup("   - animate", 0, 0, 1));
+    gui.add(planeZPhase.setup("   - phase", 0, 0, 1));
 
-    conics[1].setPosition( ofVec3f(80, 0, 0) );
-    conics[1].setLookAt( ofVec3f(80, 0, 1) );
+    gui.add(coneAnimate.setup("animate cones", false));
+    gui.add(coneLookPeriod.setup("   - animate", 0, 0, 1));
+    gui.add(coneLookPhase.setup("   - phase", 0, 0, 1));
 
-    conics[2].setPosition( ofVec3f(0, 140, 140) );
-    conics[2].setLookAt( ofVec3f(0, 140, 141) );
+    gui.add(coneMagnitude.setup("CONE (x y)", 50, 0, 100));
+    gui.add(conePeriod.setup("   - animate", 0, 0, 1));
+    gui.add(conePhase.setup("   - phase", 0, 0, 1));
+    gui.add(coneZMagnitude.setup("CONE (z)", 50, 0, 100));
+    gui.add(coneZPeriod.setup("   - animate", 0, 0, 1));
+    gui.add(coneZPhase.setup("   - phase", 0, 0, 1));
+
+    
 }
 
 //--------------------------------------------------------------
@@ -25,45 +50,48 @@ void ofApp::update(){
 void ofApp::draw(){
     
     ofClear(0);
+    
+    gui.draw();
+    
     ofSetLineWidth(1);
     
     cam.begin();
-    ofTranslate(0, 300, 0);
-    ofRotate(90, 1, 0, 0);
     ofScale(2, 2, 2);
+    
 //    ofDrawAxis(20);
+    
+//    ofSetColor(255, 10);
+//    for(int i = 0 ;i < NUM_CONES; i++)
+//        conics[i].draw();
+    
+    ofSetColor(255, 255);
+    
+    for(int i = 0 ;i < numCones; i++){
+        if(coneAnimate){
+            conics[i].setLookAt( ofVec3f(cosf(ofGetElapsedTimef()*coneLookPeriod + i*coneLookPhase),
+                                         sinf(ofGetElapsedTimef()*coneLookPeriod + i*coneLookPhase),
+                                         1) );
+            conics[i].setPosition( ofVec3f(coneMagnitude * cosf(ofGetElapsedTimef()*conePeriod + i*conePhase),
+                                           coneMagnitude * sinf(ofGetElapsedTimef()*conePeriod + i*conePhase),
+                                           coneZMagnitude * sinf(ofGetElapsedTimef()*coneZPeriod + i*coneZPhase)) );
+        }
+        plane = ofVec3f(planeXY*cosf(ofGetElapsedTimef()*planeXYPeriod + i*planeXYPhase),
+                        planeXY*sinf(ofGetElapsedTimef()*planeXYPeriod + i*planeXYPhase),
+                        planeZ + (planeZ*.9) * sinf(ofGetElapsedTimef()*planeZPeriod + i*planeZPhase) );
 
-    if(showCones){
-        ofSetColor(255, 10);
-        for(int i = 0 ;i < NUM_CONES; i++)
-            conics[i].draw();
+        planeNormal = ofVec3f(planeXYTilt * cosf(ofGetElapsedTimef()*planeXYTiltPeriod+i*planeXYTiltPhase),
+                              planeXYTilt * sinf(ofGetElapsedTimef()*planeXYTiltPeriod+i*planeXYTiltPhase),
+                              planeZTilt+ (planeZTilt*.9) * sinf(ofGetElapsedTimef()*planeZTiltPeriod + i*planeZTiltPhase) );
+        
+        conics[i].drawIntersectionsWithPlane(plane, planeNormal);
     }
     
-    static float PHI_ANGLE = 0.618 * M_PI;
-
-    ofSetColor(255, 80);
-
-    for(int i = 0; i < NUM_PLANES; i++){
-        
-        plane = ofVec3f(100 * cosf(ofGetElapsedTimef() * .4 + i*3),
-                        100 * sinf(ofGetElapsedTimef() * .5 + i*3),
-                        100 - 80*powf(cosf(ofGetElapsedTimef() + i*.1), 4) );
-        planeNormal = ofVec3f(120*cosf(ofGetElapsedTimef() + i*.2),
-                              120*sinf(ofGetElapsedTimef() + i*.3),
-                              170 + 70*cosf(ofGetElapsedTimef() + i*.4) );
-        
-        conics[0].fillIntersectionsWithPlane(plane, planeNormal);
-        conics[1].fillIntersectionsWithPlane(plane, planeNormal);
-        conics[2].fillIntersectionsWithPlane(plane, planeNormal);
-    }
-
     cam.end();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    if(key == 'c')
-        showCones = !showCones;
+
 }
 
 //--------------------------------------------------------------
