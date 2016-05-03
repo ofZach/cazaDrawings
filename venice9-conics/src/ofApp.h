@@ -2,8 +2,10 @@
 
 #include "ofMain.h"
 #include "Conics.h"
+#include "ofxGui.h"
 
-#define NUM_CONES 100
+#define NUM_CONES 64
+#define NUM_PLANES 3
 
 class ofApp : public ofBaseApp{
 
@@ -31,5 +33,41 @@ class ofApp : public ofBaseApp{
     ofVec3f movingPlane, movingPlaneNormal;
 
     ofEasyCam cam;
+
+    ofxPanel gui;
+    // hypercubes
+    ofxIntSlider numCones;
+    
+    ofxFloatSlider planeXY;
+    ofxFloatSlider planeXYPeriod;
+    ofxFloatSlider planeXYPhase;
+    ofxFloatSlider planeZ;
+    ofxFloatSlider planeZPeriod;
+    ofxFloatSlider planeZPhase;
+
+    ofxFloatSlider planeXYTilt;
+    ofxFloatSlider planeXYTiltPeriod;
+    ofxFloatSlider planeXYTiltPhase;
+    ofxFloatSlider planeZTilt;
+    ofxFloatSlider planeZTiltPeriod;
+    ofxFloatSlider planeZTiltPhase;
+
+    ofxToggle coneAnimate;
+    ofxFloatSlider coneLookPeriod;
+    ofxFloatSlider coneLookPhase;
+    ofxFloatSlider conePeriod;
+    ofxFloatSlider conePhase;
+    ofxFloatSlider coneMagnitude;
+    ofxFloatSlider coneZPeriod;
+    ofxFloatSlider coneZPhase;
+    ofxFloatSlider coneZMagnitude;
+
+    
+    ofxVec3Slider angleOffset;
+    ofxToggle indexed;
+    ofxToggle fourDAnimated;
+    ofxVec3Slider fourD;
+    ofxVec3Slider compression;
+    ofxFloatSlider gridGap;
 
 };
