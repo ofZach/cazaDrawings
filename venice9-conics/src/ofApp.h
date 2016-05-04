@@ -37,6 +37,7 @@ class ofApp : public ofBaseApp{
     ofxPanel gui;
     // hypercubes
     ofxIntSlider numCones;
+    ofxIntSlider numPlanes;
     
     ofxFloatSlider planeXY;
     ofxFloatSlider planeXYPeriod;
