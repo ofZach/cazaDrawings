@@ -17,6 +17,8 @@
 		D5451ABE1CDCEB5B00B41622 /* BaseScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5451ABC1CDCEB5B00B41622 /* BaseScene.cpp */; };
 		D5451AC11CDCEB6800B41622 /* SceneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5451ABF1CDCEB6800B41622 /* SceneManager.cpp */; };
 		D5451AC71CDCEFC200B41622 /* ExampleScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5451AC51CDCEFC200B41622 /* ExampleScene.cpp */; };
+		D5451ACE1CDD088A00B41622 /* Conics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5451ACA1CDD088A00B41622 /* Conics.cpp */; };
+		D5451ACF1CDD088A00B41622 /* ConicsScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D5451ACC1CDD088A00B41622 /* ConicsScene.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
 		E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */; };
@@ -75,6 +77,10 @@
 		D5451AC51CDCEFC200B41622 /* ExampleScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExampleScene.cpp; sourceTree = "<group>"; };
 		D5451AC61CDCEFC200B41622 /* ExampleScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExampleScene.h; sourceTree = "<group>"; };
 		D5451AC81CDCF08400B41622 /* appConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = appConstants.h; sourceTree = "<group>"; };
+		D5451ACA1CDD088A00B41622 /* Conics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Conics.cpp; sourceTree = "<group>"; };
+		D5451ACB1CDD088A00B41622 /* Conics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Conics.h; sourceTree = "<group>"; };
+		D5451ACC1CDD088A00B41622 /* ConicsScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConicsScene.cpp; sourceTree = "<group>"; };
+		D5451ACD1CDD088A00B41622 /* ConicsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConicsScene.h; sourceTree = "<group>"; };
 		E112B3AEBEA2C091BF2B40AE /* ofxPanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 30; name = ofxPanel.cpp; path = ../../../addons/ofxGui/src/ofxPanel.cpp; sourceTree = SOURCE_ROOT; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* sceneSwitcherDebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sceneSwitcherDebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -150,6 +156,7 @@
 			isa = PBXGroup;
 			children = (
 				D5451AC81CDCF08400B41622 /* appConstants.h */,
+				D5451AC91CDD088A00B41622 /* conicsScene */,
 				D5451AC41CDCEFC200B41622 /* exampleScene */,
 			);
 			path = scenes;
@@ -162,6 +169,17 @@
 				D5451AC61CDCEFC200B41622 /* ExampleScene.h */,
 			);
 			path = exampleScene;
+			sourceTree = "<group>";
+		};
+		D5451AC91CDD088A00B41622 /* conicsScene */ = {
+			isa = PBXGroup;
+			children = (
+				D5451ACA1CDD088A00B41622 /* Conics.cpp */,
+				D5451ACB1CDD088A00B41622 /* Conics.h */,
+				D5451ACC1CDD088A00B41622 /* ConicsScene.cpp */,
+				D5451ACD1CDD088A00B41622 /* ConicsScene.h */,
+			);
+			path = conicsScene;
 			sourceTree = "<group>";
 		};
 		E4328144138ABC890047C5CB /* Products */ = {
@@ -304,6 +322,8 @@
 				5CBB2AB3A60F65431D7B555D /* ofxButton.cpp in Sources */,
 				B266578FC55D23BFEBC042E7 /* ofxGuiGroup.cpp in Sources */,
 				483908258D00B98B4BE69F07 /* ofxLabel.cpp in Sources */,
+				D5451ACE1CDD088A00B41622 /* Conics.cpp in Sources */,
+				D5451ACF1CDD088A00B41622 /* ConicsScene.cpp in Sources */,
 				F285EB3169F1566CA3D93C20 /* ofxPanel.cpp in Sources */,
 				837220E80EB56CD44AD27F2A /* ofxSlider.cpp in Sources */,
 				B56FE57CC35806596D38118C /* ofxSliderGroup.cpp in Sources */,

@@ -10,6 +10,7 @@
 
 #include "appConstants.h"
 #include "ExampleScene.h"
+#include "ConicsScene.h"
 
 //-----------------------------------------------------------------------------------
 SceneManager::~SceneManager(){
@@ -19,12 +20,12 @@ SceneManager::~SceneManager(){
 void SceneManager::setup(){
     
     scenes.push_back(new ExampleScene());
-//    scenes.push_back(new olegVeraV());
+    scenes.push_back(new ConicsScene());
 //    scenes.push_back(new sarahgpRileyCircle());
 //    scenes.push_back(new mwalczykVeraSquares());
     
     gui.setDefaultWidth(300);
-    gui.setup("Control Panel", "SFPC_d4n_general_settings.xml");
+    gui.setup("Control Panel");
     
     gui.add(enableParameterSounds.set("Enable parameter sounds", true));
 //    enableParameterSounds.addListener(this, &SceneManager::toggleParameterSounds);
@@ -46,7 +47,7 @@ void SceneManager::setup(){
     lastFrame.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, OF_PIXELS_RGBA);
     currFrame.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, OF_PIXELS_RGBA);
     
-    //  transitionFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGB32F_ARB);
+    transitionFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGB32F_ARB);
     transitionFbo.begin();
     ofSetColor(0,255);
     ofDrawRectangle(0, 0, VISUALS_WIDTH, VISUALS_HEIGHT);
@@ -66,6 +67,8 @@ void SceneManager::setup(){
 }
 //-----------------------------------------------------------------------------------
 
+static int frameCounter = 1;
+
 void SceneManager::startScene(int whichScene){
 //    scenes[currentScene]->resetTiming();
 //    scenes[currentScene]->reset();
@@ -80,6 +83,10 @@ void SceneManager::nextScene(bool forward){
 }
 //-----------------------------------------------------------------------------------
 void SceneManager::update(){
+    if(frameCounter % 200 == 0){
+        currentScene = (currentScene + 1)%2;
+    }
+    frameCounter++;
     scenes[currentScene]->update();
 }
 
