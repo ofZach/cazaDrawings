@@ -12,6 +12,9 @@
 #include "ExampleScene.h"
 #include "ConicsScene.h"
 
+#define SCENE_INTERVAL 5 // seconds
+#define FADE_DURATION 1.0
+
 //-----------------------------------------------------------------------------------
 SceneManager::~SceneManager(){
 //    ofRemoveListener(sync.ffwKeyPressed, this, &sceneManager::setAdvanceCurrentScene);
@@ -21,14 +24,10 @@ void SceneManager::setup(){
     
     scenes.push_back(new ExampleScene());
     scenes.push_back(new ConicsScene());
-//    scenes.push_back(new sarahgpRileyCircle());
-//    scenes.push_back(new mwalczykVeraSquares());
     
     gui.setDefaultWidth(300);
     gui.setup("Control Panel");
-    
     gui.add(enableParameterSounds.set("Enable parameter sounds", true));
-//    enableParameterSounds.addListener(this, &SceneManager::toggleParameterSounds);
     gui.add(drawScenePanel.set("draw scene ctrl", true));
     gui.add(enableMidiUpdate.set("enable midi update", true));
     gui.add(bAutoPlay.set("Auto Play on scene change", false));
@@ -41,33 +40,25 @@ void SceneManager::setup(){
     
     
     sceneFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGBA, 4);
-    dimmedSceneFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGBA, 4);
+    lastSceneFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGBA, 4);
     dimmerShader.load("dimmer");
     
-    lastFrame.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, OF_PIXELS_RGBA);
-    currFrame.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, OF_PIXELS_RGBA);
-    
-    transitionFbo.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, GL_RGB32F_ARB);
-    transitionFbo.begin();
-    ofSetColor(0,255);
-    ofDrawRectangle(0, 0, VISUALS_WIDTH, VISUALS_HEIGHT);
-    transitionFbo.end();
-    transitionFbo.draw(0,0);
+//    ofPixels lastFrame, currFrame;
+//    lastFrame.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, OF_PIXELS_RGBA);
+//    currFrame.allocate(VISUALS_WIDTH, VISUALS_HEIGHT, OF_PIXELS_RGBA);
     
     
-    // disney
     for (auto scene : scenes){
         scene->dimensions.set(0,0,VISUALS_WIDTH, VISUALS_HEIGHT);
         scene->setup();
     }
     
     currentScene = 0;
-    
     startScene(currentScene);
 }
 //-----------------------------------------------------------------------------------
 
-static int frameCounter = 1;
+static float fadeAmnt;
 
 void SceneManager::startScene(int whichScene){
 //    scenes[currentScene]->resetTiming();
@@ -83,10 +74,22 @@ void SceneManager::nextScene(bool forward){
 }
 //-----------------------------------------------------------------------------------
 void SceneManager::update(){
-    if(frameCounter % 200 == 0){
+    if(ofGetElapsedTimef() > fadeStartTime + SCENE_INTERVAL){
+        // begin fade transition
+        fadeStartTime = ofGetElapsedTimef();
+        lastScene = currentScene;
         currentScene = (currentScene + 1)%2;
+        isFading = true;
     }
-    frameCounter++;
+    if(isFading){
+        fadeAmnt = (ofGetElapsedTimef() - fadeStartTime) / FADE_DURATION;
+        if(fadeAmnt > 1.0)
+            fadeAmnt = 1.0;
+        if(fadeAmnt < 0.0)
+            fadeAmnt = 0.0;
+        if(ofGetElapsedTimef() > fadeStartTime + FADE_DURATION)
+            isFading = false;
+    }
     scenes[currentScene]->update();
 }
 
@@ -101,7 +104,7 @@ void SceneManager::draw(){
     ofSetColor(0);
     ofDrawRectangle(CODE_X_POS-1, 0, VISUALS_WIDTH+2, VISUALS_HEIGHT);
     ofSetColor(255);
-    
+   
     if (true){//shouldDrawScene) {
         sceneFbo.begin();
         ofClear(0,0,0,255);
@@ -110,23 +113,43 @@ void SceneManager::draw(){
         ofPopStyle();
         sceneFbo.end();
         
-        dimmedSceneFbo.begin();
-        dimmerShader.begin();
-        dimmerShader.setUniformTexture("texture0", sceneFbo.getTexture(), 0);
-//        dimmerShader.setUniform1f("dimAmt", dimAmt);
-        ofSetColor(255);
-        ofClearAlpha();
-        ofDrawRectangle(0, 0, VISUALS_WIDTH, VISUALS_HEIGHT);
-        dimmerShader.end();
-        dimmedSceneFbo.end();
-        dimmedSceneFbo.draw(1,0,VISUALS_WIDTH, VISUALS_HEIGHT);
-        dimmedSceneFbo.draw(0,0,VISUALS_WIDTH, VISUALS_HEIGHT);
+        if(isFading){
+            lastSceneFbo.begin();
+            ofClear(0,0,0,255);
+            ofPushStyle();
+            scenes[lastScene]->draw();
+            ofPopStyle();
+            lastSceneFbo.end();
+        }
+        
+//        dimmedSceneFbo.begin();
+//        dimmerShader.begin();
+//        dimmerShader.setUniformTexture("texture0", sceneFbo.getTexture(), 0);
+//        dimmerShader.setUniform1f("dimAmt", fadeAmnt);
+//        ofSetColor(255);
+//        ofClearAlpha();
+//        ofDrawRectangle(0, 0, VISUALS_WIDTH, VISUALS_HEIGHT);
+//        dimmerShader.end();
+//        dimmedSceneFbo.end();
+//        dimmedSceneFbo.draw(1,0,VISUALS_WIDTH, VISUALS_HEIGHT);
+//        dimmedSceneFbo.draw(0,0,VISUALS_WIDTH, VISUALS_HEIGHT);
         
     } else {
         ofSetColor(0);
         ofFill();
         ofClearAlpha();
         ofDrawRectangle(0, 0, VISUALS_WIDTH+1, VISUALS_HEIGHT);
+    }
+ 
+    
+    ofSetColor(255, 255);
+
+    if(isFading){
+        // draw previous scene fading out
+        ofSetColor(255, 255*(1-fadeAmnt) );
+        lastSceneFbo.draw(0, 0);
+        // set current screen fade in color
+        ofSetColor(255, 255*fadeAmnt);
     }
     
     sceneFbo.draw(0, 0);

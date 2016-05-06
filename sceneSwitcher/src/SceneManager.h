@@ -30,7 +30,7 @@ public:
     
     ~SceneManager();
     vector<BaseScene*> scenes;
-    int currentScene;
+    int currentScene, lastScene;
     
     void setup();
     void update();
@@ -38,17 +38,16 @@ public:
     
     void advanceScene();
 //    void regressScene();
-    
-    ofPoint centroid, lastCentroid;
-    ofPixels lastFrame, currFrame;
-    
+        
     void startScene(int whichScene);
     
-    ofFbo transitionFbo;
     ofFbo sceneFbo;
-    ofFbo dimmedSceneFbo;
+    ofFbo lastSceneFbo;
 
     ofShader dimmerShader;
+    
+    bool isFading;
+    unsigned long fadeStartTime;
     
     ofxPanel gui;
     ofParameter<bool>bAutoPlay, bSceneWaitForCode, bFadeOut, bAutoAdvance, drawScenePanel, enableMidiUpdate, enableParameterSounds;
