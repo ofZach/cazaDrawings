@@ -14,13 +14,6 @@
 #include "ofxGui.h"
 #include <stdio.h>
 
-
-#define FADE_DELAY_MIN 1.4
-#define FADE_DELAY_MAX 1.67
-
-#define SCENE_PRE_TRANSITION_FADE   0.4
-#define SCENE_PRE_TRANSITION_CURSOR 0.5
-
 class SceneManager {
     
 private:
@@ -38,7 +31,6 @@ public:
     
     void advanceScene();
 //    void regressScene();
-        
     void startScene(int whichScene);
     
     ofFbo sceneFbo;
@@ -46,6 +38,9 @@ public:
 
     ofShader dimmerShader;
     
+    float SCENE_INTERVAL = 5; // seconds
+    float FADE_DURATION = 1.0;  // shorter than SCENE_INTERVAL
+
     bool isFading;
     unsigned long fadeStartTime;
     
@@ -54,6 +49,5 @@ public:
     ofParameter<float> autoadvanceDelay, ofSmoothing;
     float lastAutoadvanceTime;
 };
-
 
 #endif /* SceneManager_hpp */

@@ -10,10 +10,10 @@
 
 class ConicsScene : public BaseScene{
 
-	public:
-		void setup();
-		void update();
-		void draw();
+public:
+    void setup();
+    void update();
+    void draw();
 		
     Conics conics[NUM_CONES];
     
