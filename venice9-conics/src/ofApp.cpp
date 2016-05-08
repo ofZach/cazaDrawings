@@ -10,7 +10,7 @@ void ofApp::setup(){
     
     gui.setup();
     gui.add(numCones.setup("number of cones", 32, 1, 64));
-//    gui.add(indexed.setup("changes index based", false));
+    //    gui.add(indexed.setup("changes index based", false));
     
     gui.add(planeXYTilt.setup("TILT (x y)", 15, -100, 100));
     gui.add(planeXYTiltPeriod.setup("   - animate", 0, 0, 1));
@@ -18,7 +18,7 @@ void ofApp::setup(){
     gui.add(planeZTilt.setup("TILT (z)", 50, 1, 100));
     gui.add(planeZTiltPeriod.setup("   - animate", 0, 0, 1));
     gui.add(planeZTiltPhase.setup("   - phase", 0, 0, 1));
-
+    
     
     gui.add(planeXY.setup("POSITION (x y)", 50, 0, 100));
     gui.add(planeXYPeriod.setup("   - animate", 0, 0, 1));
@@ -26,18 +26,18 @@ void ofApp::setup(){
     gui.add(planeZ.setup("POSITION (z)", 50, 0, 100));
     gui.add(planeZPeriod.setup("   - animate", 0, 0, 1));
     gui.add(planeZPhase.setup("   - phase", 0, 0, 1));
-
+    
     gui.add(coneAnimate.setup("animate cones", false));
     gui.add(coneLookPeriod.setup("   - animate", 0, 0, 1));
     gui.add(coneLookPhase.setup("   - phase", 0, 0, 1));
-
+    
     gui.add(coneMagnitude.setup("CONE (x y)", 50, 0, 100));
     gui.add(conePeriod.setup("   - animate", 0, 0, 1));
     gui.add(conePhase.setup("   - phase", 0, 0, 1));
     gui.add(coneZMagnitude.setup("CONE (z)", 50, 0, 100));
     gui.add(coneZPeriod.setup("   - animate", 0, 0, 1));
     gui.add(coneZPhase.setup("   - phase", 0, 0, 1));
-
+    
     
 }
 
@@ -58,11 +58,11 @@ void ofApp::draw(){
     cam.begin();
     ofScale(2, 2, 2);
     
-//    ofDrawAxis(20);
+    //    ofDrawAxis(20);
     
-//    ofSetColor(255, 10);
-//    for(int i = 0 ;i < NUM_CONES; i++)
-//        conics[i].draw();
+    //    ofSetColor(255, 10);
+    //    for(int i = 0 ;i < NUM_CONES; i++)
+    //        conics[i].draw();
     
     ofSetColor(255, 255);
     
@@ -78,7 +78,7 @@ void ofApp::draw(){
         plane = ofVec3f(planeXY*cosf(ofGetElapsedTimef()*planeXYPeriod + i*planeXYPhase),
                         planeXY*sinf(ofGetElapsedTimef()*planeXYPeriod + i*planeXYPhase),
                         planeZ + (planeZ*.9) * sinf(ofGetElapsedTimef()*planeZPeriod + i*planeZPhase) );
-
+        
         planeNormal = ofVec3f(planeXYTilt * cosf(ofGetElapsedTimef()*planeXYTiltPeriod+i*planeXYTiltPhase),
                               planeXYTilt * sinf(ofGetElapsedTimef()*planeXYTiltPeriod+i*planeXYTiltPhase),
                               planeZTilt+ (planeZTilt*.9) * sinf(ofGetElapsedTimef()*planeZTiltPeriod + i*planeZTiltPhase) );
@@ -87,9 +87,7 @@ void ofApp::draw(){
     }
     
     cam.end();
-}
-
-//--------------------------------------------------------------
+}//--------------------------------------------------------------
 void ofApp::keyPressed(int key){
 
 }
